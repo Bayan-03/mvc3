@@ -3,32 +3,31 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - EventMVC3</title>
+    <title>@ViewData["Title"] - Home</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/EventMVC3.styles.css" asp-append-version="true" />
+    <link href="~/css/header-footer.css" rel="stylesheet" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EventMVC3</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <div class="logo">
+            <h2>event</h2>
+        </div>
+
+        <div class="action" onclick="actionToggle();">
+            <span>+</span>
+            <ul>
+                <li><a asp-controller="Home" asp-action="Index"><img src="https://www.flaticon.com/svg/static/icons/svg/2111/2111392.svg" alt="" width="25px">الرئيسية</a></li>
+                <li><a asp-controller="Home" asp-action="Index"><img src="https://www.flaticon.com/svg/static/icons/svg/2111/2111392.svg" alt="" width="25px">حسابي</a></li>
+                <li><a asp-controller="Home" asp-action="calendar"><img src="https://www.flaticon.com/svg/static/icons/svg/2111/2111392.svg" alt="" width="25px">التقويم</a></li>
+                <li><a asp-controller="" asp-action=""><img src="https://www.flaticon.com/svg/static/icons/svg/2111/2111392.svg" alt="" width="25px">التصنيفات</a></li>
+                <li><a asp-controller="" asp-action=""><img src="https://www.flaticon.com/svg/static/icons/svg/2111/2111392.svg" alt="" width="25px">احداثي</a></li>
+
+                @RenderSection("Styles", required: false)
+            </ul>
+
+        </div>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -36,14 +35,38 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - EventMVC3 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer>
+        <div class="box-container">
+            <div class="box">
+                <h3>سوشيل ميديا</h3>
+                <a href="">تويتر</a>
+                <a href="">فيسبوك</a>
+                <a href="">انستغرام</a>
+            </div>
+
+            <div class="box">
+                <h3>روابط إضافية</h3>
+                <a href="Account/profile.html">حسابي</a>
+                <a href="notifcation.html">سياسة الخصوصية</a>
+                <a href="polecy/contact-us.html">تواصل معنا</a>
+                <a href="polecy/about us.html">من نحن</a>
+
+            </div>
+
+            <div class="box">
+                <h3>خدمة العملاء</h3>
+                <a href="#">+96767736638</a>
+                <a href="#">example@gmail.com</a>
+                <a href="#">hadramout, yemen</a>
+            </div>
         </div>
+
+        <div class="credit">created by <span> <a href="home.html">EVENT</a></span></div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/header.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
