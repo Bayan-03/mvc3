@@ -1,8 +1,132 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@* عشان نخلي الستايل لذا الفيو بس  *@
+@section Styles {
+    <link rel="stylesheet" href="~/css/Home.css" />
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div class="test">this is test</div>
+
+<div class="main">
+    <div class="main-text">
+        <h2 id="label">منصة تبسطك وتغير جوك <br><span id="label"> بالتجارب والمغامرات</span></h2>
+        <div class="search-form">
+            <form>
+                <input type="text">
+                <button></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="container1">
+    <h4 class="heading-colerd">التصنيفات</h4>
+
+    <div class="big-contant">
+        @* اللي ماسكته تحط حقها بليز ******************************************************* *@
+        <a asp-controller="" asp-action="">
+            <div class="card">
+                <div class="content">
+                    <img src="../icons//art-studies.png" alt="">
+                    <p class="para">
+                        الفـــــن
+                    </p>
+                </div>
+            </div>
+        </a>
+        @* اللي ماسكته تحط حقها بليز ******************************************************* *@
+
+        <a asp-controller="" asp-action="">
+            <div class="card">
+                <div class="content">
+                    <img src="../icons/location.png" alt="">
+                    <p class="para">
+                        المغـــامرة
+                    </p>
+                </div>
+            </div>
+        </a>
+
+        @* اللي ماسكته تحط حقها بليز ********************** *@
+
+        <a asp-controller="" asp-action="">
+            <div class="card">
+                <div class="content">
+                    <img src="../icons/luctuer.png" alt="">
+                    <p class="para">
+                        الندوات
+                    </p>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="container1">
+    <h4 class="heading-colerd">مقترحه لك</h4>
+    <div class="big-contant">
+        <section class="articles">
+
+            <article>
+                <div class="article-wrapper">
+                    <figure>
+                        <img src="../images/advantuer/boats.jpg" alt="" />
+                    </figure>
+                    <div class="article-body">
+                        <h2>تجربة القوارب</h2>
+                        <p>
+                            عيش تجربة ركوب القوارب الخشبية وتعلم أساسيات التجديف والإستمتاع بمنظر الغروب في بحر المكلا
+                        </p>
+                        <a class="read-more">
+                            Read more
+                            <img class="icon" src="../icons/angle-small-left.png" alt="">
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+
+            <article>
+                <div class="article-wrapper">
+                    <figure>
+                        <img src="../images/2024-05-04 (8).png" alt="" />
+                    </figure>
+                    <div class="article-body">
+                        <h2> تجربة العمل كباريستا </h2>
+                        <p>
+                            عيش تجربة العمل في احد المقاهي وإعداد القهوة بنفسك
+                        </p>
+                        <a href="event food.html" class="read-more">
+                            Read more
+                            <img class="icon" src="../icons/angle-small-left.png" alt="">
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+
+            <article>
+                <div class="article-wrapper">
+                    <figure>
+                        <img src="../images/2024-05-04 (7).png" alt="" />
+                    </figure>
+                    <div class="article-body">
+                        <h2>تجربة الرسم على الخزف</h2>
+                        <p>
+                            ورينا ابداعاتك في الرسم على الخزفيات الجاهزه وتلوينها باسلوبك الحر
+                        </p>
+                        <a href="event food1.html" class="read-more">
+                            إقرأ المزيد
+                            <img class="icon" src="../icons/angle-small-left.png" alt="">
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+
+
+        </section>
+    </div>
 </div>
