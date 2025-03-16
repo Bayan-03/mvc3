@@ -13,9 +13,7 @@ public partial class Event
 
     public DateTime? FinishDate { get; set; }
 
-    public TimeSpan StaetTime { get; set; }
-
-    public TimeSpan FinishTime { get; set; }
+    public string? TimeDoration { get; set; }
 
     public string? PlaceName { get; set; }
 
@@ -29,7 +27,11 @@ public partial class Event
 
     public int? Price { get; set; }
 
+    public string? Image { get; set; }
+
     public virtual EventCategory CategoryNavigation { get; set; } = null!;
+
+    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
