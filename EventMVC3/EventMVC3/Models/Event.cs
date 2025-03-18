@@ -31,6 +31,8 @@ public partial class Event
 
     public string? Image { get; set; }
 
+    public string? ConstraintAge { get; set; }
+
     public virtual EventCategory CategoryNavigation { get; set; } = null!;
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();

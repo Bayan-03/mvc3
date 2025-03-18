@@ -9,5 +9,7 @@ public partial class EventCategory
 
     public string CategoryName { get; set; } = null!;
 
+    public string? Icon { get; set; }
+
     public virtual ICollection<Event> Events { get; set; } = new List<Event>();
 }
