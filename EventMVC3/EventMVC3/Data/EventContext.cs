@@ -81,6 +81,9 @@ public partial class EventContext : DbContext
             entity.Property(e => e.City)
                 .HasMaxLength(50)
                 .HasColumnName("city");
+            entity.Property(e => e.ConstraintAge)
+                .HasMaxLength(50)
+                .HasColumnName("constraintAge");
             entity.Property(e => e.Discription).HasColumnName("discription");
             entity.Property(e => e.FineshTime).HasColumnName("fineshTime");
             entity.Property(e => e.FinishDate)
@@ -114,6 +117,9 @@ public partial class EventContext : DbContext
             entity.Property(e => e.CategoryName)
                 .HasMaxLength(50)
                 .HasColumnName("categoryName");
+            entity.Property(e => e.Icon)
+                .IsUnicode(false)
+                .HasColumnName("icon");
         });
 
         modelBuilder.Entity<Reservation>(entity =>
