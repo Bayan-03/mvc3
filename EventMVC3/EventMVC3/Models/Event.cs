@@ -13,7 +13,9 @@ public partial class Event
 
     public DateTime? FinishDate { get; set; }
 
-    public string? TimeDoration { get; set; }
+    public TimeSpan? StartTime { get; set; }
+
+    public TimeSpan? FineshTime { get; set; }
 
     public string? PlaceName { get; set; }
 

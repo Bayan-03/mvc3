@@ -28,9 +28,9 @@ public partial class EventContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("server=LAPTOP-4OQPSNRM\\SQLEXPRESS;database=event;trusted_connection=true;TrustServerCertificate=True");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("server=LAPTOP-4OQPSNRM\\SQLEXPRESS;database=event;trusted_connection=true;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -82,6 +82,7 @@ public partial class EventContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("city");
             entity.Property(e => e.Discription).HasColumnName("discription");
+            entity.Property(e => e.FineshTime).HasColumnName("fineshTime");
             entity.Property(e => e.FinishDate)
                 .HasColumnType("date")
                 .HasColumnName("finishDate");
@@ -92,9 +93,7 @@ public partial class EventContext : DbContext
             entity.Property(e => e.StartDate)
                 .HasColumnType("date")
                 .HasColumnName("startDate");
-            entity.Property(e => e.TimeDoration)
-                .HasMaxLength(50)
-                .HasColumnName("timeDoration");
+            entity.Property(e => e.StartTime).HasColumnName("startTime");
             entity.Property(e => e.UserId).HasColumnName("userId");
 
             entity.HasOne(d => d.CategoryNavigation).WithMany(p => p.Events)
