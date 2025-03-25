@@ -1,8 +1,13 @@
-﻿@* عشان نخلي الستايل لذا الفيو بس  *@
+﻿
+@* عشان نخلي الستايل لذا الفيو بس  *@
 @section Styles {
     <link rel="stylesheet" href="~/css/Home.css" />
 }
 
+@{
+    var cards = ViewBag.CategoriesList as List<Dictionary<string, string>>;
+    var cardsId = ViewBag.categoryCardId as List<Dictionary<string, int>>;
+}
 
 <div class="test">this is test</div>
 
@@ -23,46 +28,31 @@
 
 <div class="container1">
     <h4 class="heading-colerd">التصنيفات</h4>
-
     <div class="big-contant">
-        @* اللي ماسكته تحط حقها بليز ******************************************************* *@
-        <a asp-controller="" asp-action="">
-            <div class="card">
-                <div class="content">
-                    <img src="../icons//art-studies.png" alt="">
-                    <p class="para">
-                        الفـــــن
-                    </p>
-                </div>
-            </div>
-        </a>
-        @* اللي ماسكته تحط حقها بليز ******************************************************* *@
+        @{
+            int t = 0;
+        }
+        @foreach (var card in cards)
+        {
+            t++;
+            <a asp-controller="Event" asp-action="Index" asp-route-name="@card["name"]">
+                    <div class="card">
+                        <div class="content">
+                            <img src="@card["icon"]" alt="">
+                            <p class="para">
+                                @card["name"]
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            
+            @* اللي ماسكته تحط حقها بليز ******************************************************* *@
+           
 
-        <a asp-controller="" asp-action="">
-            <div class="card">
-                <div class="content">
-                    <img src="../icons/location.png" alt="">
-                    <p class="para">
-                        المغـــامرة
-                    </p>
-                </div>
-            </div>
-        </a>
-
-        @* اللي ماسكته تحط حقها بليز ********************** *@
-
-        <a asp-controller="" asp-action="">
-            <div class="card">
-                <div class="content">
-                    <img src="../icons/luctuer.png" alt="">
-                    <p class="para">
-                        الندوات
-                    </p>
-                </div>
-            </div>
-        </a>
+    }
     </div>
-</div>
+ </div>
+
 
 <div class="container1">
     <h4 class="heading-colerd">مقترحه لك</h4>
