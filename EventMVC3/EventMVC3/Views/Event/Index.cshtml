@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Event>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section styles{
+    <link rel="stylesheet" href="~/css/Event/Index.css" />
+}
+
+<form asp-action="Search" asp-controller="Event" method="get" class="search-bar">
+    <input type="text" name="searchTerm" placeholder="ابحث عن حدث..." />
+    <button type="submit"><img src="~/icons/search-interface-symbol.png" alt="بحث"></button>
+</form>
+
+<div class="container">
+    <h4 class="heading-colerd">@ViewBag.n </h4>
+
+    <div class="big-contant">
+
+        <section class="articles">
+
+            @foreach(var e in Model)
+            {
+                <article>
+                    <div class="article-wrapper">
+                        <figure>
+                            <img src=@e.Image alt="" />
+                        </figure>
+                        <div class="article-body">
+                            <h2>@e.Name</h2>
+                            <p>
+                                @e.Discription
+                            </p>
+                            <a class="read-more" asp-action="eventDetails" asp-controller="Event" asp-route-Id="@e.Id">
+                                إقرأ المزيد
+                                <img class="icon" src="../../icons/angle-small-left.png" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            }
+
+         </section>
+     </div>
+ </div>
+
+
+
