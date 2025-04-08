@@ -5,10 +5,8 @@
 }
 
 @section styles{
-    <link rel="stylesheet" href="~/css/EventDetails.css" />
-
+    <link rel="stylesheet" href="~/css/Event/EventDetails.css" />
 }
-~/css/art/cande
 
 
 <section class="details" id="details">
@@ -16,79 +14,54 @@
     <div class="row">
 
         <div class="content-de">
-            <h3 id="heading">@Model.Name </h3>
-            <p id="text">@Model.Discription تجربة ممتعة تدخلك في عالم الخيال والابداع استخدم الالوان وارسم القالب الابيض مع صب الشمع النقي وتزيينه</p>
+            <h3 id="heading">@Model.Name</h3>
+            <p id="text">@Model.Discription</p>
 
             <div class="big-info">
                 <div class="info">
                     <img src="../../icons/location-pin (1).png" alt="">
-                    <h3 id="det">@Model.PlaceName  محل شمعه </h3>
+                    <h3 id="det">@Model.City - @Model.PlaceName</h3>
                 </div>
                 <div class="info">
                     <img src="../../icons/age-alt.png" alt="">
-                    <h3 id="det">العمر:15 سنه وأعلى</h3>
+                    <h3 id="det">@Model.ConstraintAge</h3>
                 </div>
                 <div class="info">
                     <img src="../../icons/schedule.png" alt="">
-                    <h3 id="det">من @Model.StartDate الى @Model.FinishDate</h3>
+                    <h3 id="det">يبدأ في @($"{Model.StartDate:dd/MM/yyyy}") ينتهي في @($"{Model.FinishDate:dd/MM/yyyy}")</h3>
                 </div>
                 <div class="info">
                     <img src="../../icons/duration-alt.png" alt="">
-                    <h3 id="det"> </h3>
+                    <h3 id="det">من @Model.StartTime إلى @Model.FineshTime</h3>
                 </div>
 
             </div>
             <a href="../B&G/chose.html" class="btn-de">للحجز</a>
         </div>
         <div class="pict-container">
-            <img src="../../images/art/candel.jpg" alt="">
+            <img src=@Model.Image alt="">
         </div>
     </div>
 </section>
-<section class="big-contant">
+@* <img src="~/icons/art-studies.png" />
+ *@<section class="big-contant">
     <h1 id="heading">التعليقات</h1>
-    <div class="comments">
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <div class="prof"><img src="../../icons/girl.png" alt=""></div>
-                <div class="comment">
-                    <h2>فاطمة </h2>
-                    <p>تجربه راقيه</p>
+    <form asp-action="Search" asp-controller="Event" method="get" class="search-bar">
+        <input type="text" name="searchTerm" placeholder="ابحث عن حدث..." />
+        <button type="submit"><img src="~/icons/search-interface-symbol.png" alt="بحث"></button>
+    </form>
+    @foreach(var comment in Model.Comments)
+    {
+        <div class="comments">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="prof"><img src="~/icons/user.png" alt=""></div>
+                    <div class="comment">
+                        <h2>@comment.User.Name</h2>
+                        <p>@comment.Comment1</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="comments">
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <div class="prof"><img src="../../icons/girl.png" alt=""></div>
-                <div class="comment">
-                    <h2>بيان </h2>
-                    <p>يمديكم تاخذون شمعتكم او تبيعوها!!</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="comments">
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <div class="prof"><img src="../../icons/girl.png" alt=""></div>
-                <div class="comment">
-                    <h2>منار</h2>
-                    <p>الشكل النهائي يجنن</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="comments">
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <div class="prof"><img src="../../icons/girl.png" alt=""></div>
-                <div class="comment">
-                    <h2>مرام</h2>
-                    <p>ما احب الشموع كثير الا انها ممتعه</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    }
 </section>
