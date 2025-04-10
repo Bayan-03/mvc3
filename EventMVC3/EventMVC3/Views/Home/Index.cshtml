@@ -9,25 +9,24 @@
     var cardsId = ViewBag.categoryCardId as List<Dictionary<string, int>>;
 }
 
-<div class="test">this is test</div>
 
-<div class="main">
-    <div class="main-text">
-        <h2 id="label">منصة تبسطك وتغير جوك <br><span id="label"> بالتجارب والمغامرات</span></h2>
-        <div class="search-form">
-            <form>
-                <input type="text">
-                <button></button>
-            </form>
+<!-- قسم الهيرو -->
+<section class="hero">
+    <div class="container">
+        <h1>احجز أفضل الأحداث بسهولة!</h1>
+        <p class="lead">اختر من بين مئات الفعاليات، حفلات، مؤتمرات، وأنشطة ترفيهية</p>
+        <div class="hero-buttons">
+            <a href="#events" class="btn btn-primary">استعرض الأحداث</a>
+            <a href="#how-it-works" class="btn btn-outline">كيف تعمل المنصة؟</a>
         </div>
     </div>
-</div>
+</section>
 
 
 
+<div class="container">
+    <h4 class="section-title">التصنيفات</h4>
 
-<div class="container1">
-    <h4 class="heading-colerd">التصنيفات</h4>
     <div class="big-contant">
         @{
             int t = 0;
@@ -52,10 +51,45 @@
     }
     </div>
  </div>
+<!-- قسم كيف يعمل الموقع -->
+<section id="how-it-works" class="how-it-works">
+    <div class="container">
+        <h2 class="section-title">كيف تحجز حدثك في 3 خطوات بسيطة</h2>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <i class="fas fa-search"></i>
+                    <h3>ابحث عن الحدث</h3>
+                    <p>تصفح الأحداث المتاحة أو استخدم محرك البحث</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <i class="fas fa-ticket-alt"></i>
+                    <h3>اختر التذاكر</h3>
+                    <p>حدد عدد التذاكر ونوعها</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>أكمل الحجز</h3>
+                    <p>ادفع إلكترونيًا واستلم التذاكر فورًا</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 
-<div class="container1">
-    <h4 class="heading-colerd">مقترحه لك</h4>
+<div class="how-it-works">
+    <h4 class="section-title">مقترحه لك</h4>
     <div class="big-contant">
         <section class="articles">
 
@@ -120,3 +154,43 @@
         </section>
     </div>
 </div>
+
+<!-- قسم المميزات -->
+<section class="features">
+    <div class="container">
+        <h2 class="section-title">لماذا تختار منصتنا؟</h2>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-bolt"></i>
+                <h3>حجز سريع</h3>
+                <p>أكمل حجزك في أقل من دقيقتين</p>
+            </div>
+
+            <div class="feature-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>دفع آمن</h3>
+                <p>نظام دفع إلكتروني مؤمن بالكامل</p>
+            </div>
+
+            <div class="feature-card">
+                <i class="fas fa-headset"></i>
+                <h3>دعم فني</h3>
+                <p>متاح 24/7 لمساعدتك في أي وقت</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- قسم النشرة البريدية -->
+<section class="newsletter">
+    <div class="container">
+        <h2>اشترك ليصلك كل جديد</h2>
+        <p>احصل على آخر الأخبار والعروض الخاصة على بريدك</p>
+
+        <form class="newsletter-form">
+            <input type="email" placeholder="بريدك الإلكتروني" required>
+            <button type="submit" class="btn btn-primary">اشتراك</button>
+        </form>
+    </div>
+</section>
