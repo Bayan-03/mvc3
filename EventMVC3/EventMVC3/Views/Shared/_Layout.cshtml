@@ -4,66 +4,84 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Home</title>
-    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+      @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />   *@
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/header-footer.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/EventMVC3.styles.css" asp-append-version="true" />
-    <link href="~/css/header-footer.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
     @RenderSection("Styles", required: false)
 </head>
 <body>
     <header>
-        <div class="logo">
-            <h2>event</h2>
-        </div>
-
-        <div class="action" onclick="actionToggle();">
-            <span>+</span>
-            <ul>
-                <li><a asp-controller="Home" asp-action="Index"><img src="https://www.flaticon.com/svg/static/icons/svg/2111/2111392.svg" alt="" width="25px">الرئيسية</a></li>
-                <li><a asp-controller="Home" asp-action="Index"><img src="https://www.flaticon.com/svg/static/icons/svg/2111/2111392.svg" alt="" width="25px">حسابي</a></li>
-                <li><a asp-controller="Home" asp-action=""><img src="https://www.flaticon.com/svg/static/icons/svg/2111/2111392.svg" alt="" width="25px">التقويم</a></li>
-                <li><a asp-controller="" asp-action=""><img src="https://www.flaticon.com/svg/static/icons/svg/2111/2111392.svg" alt="" width="25px">التصنيفات</a></li>
-                <li><a asp-controller="" asp-action=""><img src="https://www.flaticon.com/svg/static/icons/svg/2111/2111392.svg" alt="" width="25px">احداثي</a></li>
-
-                
-            </ul>
-
-        </div>
+        <nav class="navbar">
+            <div class="container">
+                <a class="logo" asp-controller="Home" asp-action="Index">Eventify</a>
+                <div class="nav-links">
+                    <a class="active" asp-controller="Home" asp-action="Index">الرئيسية</a>
+                    <a href="#">الأحداث</a>
+                    <a href="#">حجوزاتي</a>
+                    <a href="#" class="btn btn-outline">تسجيل الدخول</a>
+                </div>
+            </div>
+        </nav>
     </header>
-    <div>
-        <main role="main" >
-            @RenderBody()
-        </main>
-    </div>
 
+    <main>
+        @RenderBody()
+    </main>
+
+    <!-- الفوتر  -->
     <footer>
-        <div class="box-container">
-            <div class="box">
-                <h3>سوشيل ميديا</h3>
-                <a href="">تويتر</a>
-                <a href="">فيسبوك</a>
-                <a href="">انستغرام</a>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Eventify</h3>
+                    <p>منصة رائدة في حجز وتذاكر الأحداث والفعاليات في الوطن العربي</p>
+                    <div class="social-links">
+                        <a href="#" style="color:inherit;"><i class="fab fa-twitter" ></i></a>
+                        <a href="#" style="color:inherit;"><i class="fab fa-instagram"></i></a>
+                        <a href="#" style="color:inherit;"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h3>روابط سريعة</h3>
+                    <ul>
+                        <li><a href="#" style="color:inherit;">الرئيسية</a></li>
+                        <li><a href="#events" style="color:inherit;">الأحداث</a></li>
+                        <li><a href="#how-it-works" style="color:inherit;">كيفية الحجز</a></li>
+                        <li><a href="#" style="color:inherit;">حجوزاتي</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>تواصل معنا</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> 966123456789+</li>
+                        <li><i class="fas fa-envelope"></i> info@eventhub.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> الرياض، المملكة العربية السعودية</li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>النشرة البريدية</h3>
+                    <p>اشترك ليصلك كل جديد عن الأحداث القادمة</p>
+
+                    <form class="footer-newsletter">
+                        <input type="email" placeholder="بريدك الإلكتروني" required>
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
             </div>
 
-            <div class="box">
-                <h3>روابط إضافية</h3>
-                <a href="Account/profile.html">حسابي</a>
-                <a href="notifcation.html">سياسة الخصوصية</a>
-                <a href="polecy/contact-us.html">تواصل معنا</a>
-                <a href="polecy/about us.html">من نحن</a>
-
-            </div>
-
-            <div class="box">
-                <h3>خدمة العملاء</h3>
-                <a href="#">+96767736638</a>
-                <a href="#">example@gmail.com</a>
-                <a href="#">hadramout, yemen</a>
+            <div class="copyright">
+                <p>&copy; 2023 Eventify. جميع الحقوق محفوظة</p>
+                <div class="footer-links">
+                    <a href="#" style="color:inherit;">الشروط والأحكام</a>
+                    <a href="#" style="color:inherit;">سياسة الخصوصية</a>
+                </div>
             </div>
         </div>
-
-        <div class="credit">created by <span> <a href="home.html">EVENT</a></span></div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
