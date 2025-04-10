@@ -1,4 +1,4 @@
-/* «·√”«”Ì«  */
+
 :root {
     --primary-color: #9C88FF;
     --secondary-color: #7E22CE;
@@ -33,11 +33,10 @@ a {
     color: inherit;
 }
 
-/* ‘—Ìÿ «· ‰ﬁ· */
 .navbar {
     background-color: white;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 15px 0;
+    padding: 15px 25px;
     position: fixed;
     width: 100%;
     top: 0;
@@ -127,7 +126,7 @@ a {
 footer {
     background-color: var(--dark-color);
     color: white;
-    padding: 80px 0 20px;
+    padding: 80px 30px;
 }
 
 .footer-grid {
