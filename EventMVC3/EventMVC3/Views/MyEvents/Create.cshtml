@@ -1,51 +1,98 @@
-﻿@model EventMVC3.Models.Reservation
-
+﻿@model Event
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = (Model.Id == 0 ? "إضافة حدث جديد" : "تعديل الحدث");
 }
 
-<h1>Create</h1>
+<div class="event-form-container">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
 
-<h4>Reservation</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="BookingDate" class="control-label"></label>
-                <input asp-for="BookingDate" class="form-control" />
-                <span asp-validation-for="BookingDate" class="text-danger"></span>
+    <form asp-action="@(Model.Id == 0 ? "Create" : "Edit")" method="post" enctype="multipart/form-data">
+        @if (Model.Id != 0)
+        {
+            <input type="hidden" asp-for="Id" />
+        }
+
+        <div class="form-group">
+            <label asp-for="Name">اسم الحدث</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Category">التصنيف</label>
+                    <select asp-for="Category" class="form-control"
+                            asp-items="@(new SelectList(ViewBag.Categories, "Id", "CategoryName"))">
+                        <option value="">-- اختر تصنيف --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="StartDate">تاريخ البداية</label>
+                    <input asp-for="StartDate" type="date" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="FinishDate">تاريخ النهاية (اختياري)</label>
+                    <input asp-for="FinishDate" type="date" class="form-control" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="StartTime">وقت البداية (اختياري)</label>
+                    <input asp-for="StartTime" type="time" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="FineshTime">وقت النهاية (اختياري)</label>
+                    <input asp-for="FineshTime" type="time" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Price">السعر (اختياري)</label>
+                    <input asp-for="Price" type="number" class="form-control" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EventId" class="control-label"></label>
-                <select asp-for="EventId" class ="form-control" asp-items="ViewBag.EventId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PlaceName">مكان الحدث (اختياري)</label>
+            <input asp-for="PlaceName" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="City">المدينة (اختياري)</label>
+            <input asp-for="City" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Image">صورة الحدث</label>
+            <input asp-for="Image" type="file" class="form-control" />
+            @if (Model.Id != 0 && !string.IsNullOrEmpty(Model.Image))
+            {
+                <div class="current-image">
+                    <img src="@Model.Image" width="150" />
+                    <span>الصورة الحالية</span>
+                </div>
+            }
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Discription">وصف الحدث</label>
+            <textarea asp-for="Discription" class="form-control" rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ConstraintAge">القيود العمرية (اختياري)</label>
+            <input asp-for="ConstraintAge" class="form-control" />
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">حفظ</button>
+            <a asp-action="Index" class="btn btn-secondary">إلغاء</a>
+        </div>
+    </form>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

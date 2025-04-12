@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EventMVC3.Models;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using EventMVC3.Data;
 
 namespace EventMVC3.Controllers
@@ -10,123 +9,168 @@ namespace EventMVC3.Controllers
     public class MyEventsController : Controller
     {
         private readonly EventContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public MyEventsController(EventContext context)
+        public MyEventsController(EventContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
-        // عرض أحداث المستخدم الحالي
-        public async Task<IActionResult> Index()
+        // GET: MyEvents
+        public IActionResult Index()
         {
-            var userId = GetCurrentUserId();
-            var userEvents = await _context.Reservations
-                .Include(r => r.Event)
-                .Where(r => r.UserId == userId)
-                .ToListAsync();
-
-            return View(userEvents);
-        }
-
-        // عرض تفاصيل الحدث (معدلة لعرض كل المعلومات)
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null) return NotFound();
-
-            var reservation = await _context.Reservations
-                .Include(r => r.Event)
-                .ThenInclude(e => e.CategoryNavigation) // لجلب بيانات التصنيف
-                .FirstOrDefaultAsync(r => r.IdNumber == id);
-
-            if (reservation == null) return NotFound();
-
-            return View(reservation);
-        }
-
-        // عرض الأحداث المتاحة للإضافة (معدلة)
-        public async Task<IActionResult> Create()
-        {
-            var availableEvents = await _context.Events
+            var events = _context.Events
                 .Include(e => e.CategoryNavigation)
-                .ToListAsync();
+                .ToList();
 
-            return View(availableEvents);
+            return View(events);
         }
 
-        // إضافة حدث جديد (معدلة)
-        //[HttpPost]
-        //public async Task<IActionResult> AddEvent(int eventId)
-        //{
-        //    var reservation = new Reservation
-        //    {
-        //        EventId = eventId,
-        //        UserId = GetCurrentUserId(),
-        //        BookingDate = DateTime.Now
-        //    };
-
-        //    _context.Reservations.Add(reservation);
-        //    await _context.SaveChangesAsync();
-
-        //    return RedirectToAction(nameof(Index));
-        //}
+        // GET: MyEvents/Create
+        public IActionResult Create()
+        {
+            ViewBag.Categories = _context.EventCategories.ToList();
+            return View();
+        }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEvent(int eventId)
+        public async Task<IActionResult> Create(Event model, IFormFile? imageFile)
         {
-            // 1. التحقق من وجود الحدث
-            if (!await _context.Events.AnyAsync(e => e.Id == eventId))
-                return NotFound();
-
-            // 2. إنشاء الحجز
-            var reservation = new Reservation
+            if (ModelState.IsValid)
             {
-                EventId = eventId,
-                UserId = GetCurrentUserId(), // تأكد أن الزملاء لم يغيروا طريقة العمل
-                BookingDate = DateTime.Now
-            };
+                if (imageFile != null)
+                {
+                    string uploadsFolder = Path.Combine(_env.WebRootPath, "images");
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-            // 3. المحاولة مع معالجة الأخطاء
-            try
-            {
-                _context.Reservations.Add(reservation);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(stream);
+                    }
+
+                    model.Image = "/images/" + uniqueFileName;
+                }
+
+                _context.Events.Add(model);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500);
-            }
+
+            ViewBag.Categories = _context.EventCategories.ToList();
+            return View(model);
         }
 
-
-        // الحذف (كما هو)
-        public async Task<IActionResult> Delete(int? id)
+        // GET: MyEvents/Edit/5
+        public IActionResult Edit(int? id)
         {
             if (id == null) return NotFound();
 
-            var reservation = await _context.Reservations
-                .Include(r => r.Event)
-                .FirstOrDefaultAsync(r => r.IdNumber == id);
+            var eventItem = _context.Events.Find(id);
+            if (eventItem == null) return NotFound();
 
-            if (reservation == null) return NotFound();
+            ViewBag.Categories = _context.EventCategories.ToList();
+            return View(eventItem);
+        }
 
-            return View(reservation);
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, Event model, IFormFile? imageFile)
+        {
+            if (id != model.Id) return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var existingEvent = await _context.Events.FindAsync(id);
+
+                    // تحديث الحقول
+                    existingEvent.Name = model.Name;
+                    existingEvent.StartDate = model.StartDate;
+                    existingEvent.FinishDate = model.FinishDate;
+                    existingEvent.StartTime = model.StartTime;
+                    existingEvent.FineshTime = model.FineshTime;
+                    existingEvent.PlaceName = model.PlaceName;
+                    existingEvent.City = model.City;
+                    existingEvent.Discription = model.Discription;
+                    existingEvent.Category = model.Category;
+                    existingEvent.Price = model.Price;
+                    existingEvent.ConstraintAge = model.ConstraintAge;
+
+                    if (imageFile != null)
+                    {
+                        if (!string.IsNullOrEmpty(existingEvent.Image))
+                        {
+                            var oldImagePath = Path.Combine(_env.WebRootPath, existingEvent.Image.TrimStart('/'));
+                            if (System.IO.File.Exists(oldImagePath))
+                                System.IO.File.Delete(oldImagePath);
+                        }
+
+                        string uploadsFolder = Path.Combine(_env.WebRootPath, "images");
+                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(stream);
+                        }
+
+                        existingEvent.Image = "/images/" + uniqueFileName;
+                    }
+
+                    _context.Update(existingEvent);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!EventExists(model.Id))
+                        return NotFound();
+                    throw;
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewBag.Categories = _context.EventCategories.ToList();
+            return View(model);
+        }
+
+        // GET: MyEvents/Delete/5
+        public IActionResult Delete(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var eventItem = _context.Events
+                .Include(e => e.CategoryNavigation)
+                .FirstOrDefault(e => e.Id == id);
+
+            if (eventItem == null) return NotFound();
+
+            return View(eventItem);
         }
 
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var reservation = await _context.Reservations.FindAsync(id);
-            _context.Reservations.Remove(reservation);
-            await _context.SaveChangesAsync();
+            var eventItem = await _context.Events.FindAsync(id);
+            if (eventItem != null)
+            {
+                if (!string.IsNullOrEmpty(eventItem.Image))
+                {
+                    var imagePath = Path.Combine(_env.WebRootPath, eventItem.Image.TrimStart('/'));
+                    if (System.IO.File.Exists(imagePath))
+                        System.IO.File.Delete(imagePath);
+                }
+
+                _context.Events.Remove(eventItem);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
 
-        private int GetCurrentUserId()
+        private bool EventExists(int id)
         {
-            // سيتم استبدالها بنظام المصادقة الفعلي
-            return 1; // قيمة افتراضية للاختبار
+            return _context.Events.Any(e => e.Id == id);
         }
     }
 }

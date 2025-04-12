@@ -18,7 +18,8 @@
                 <a class="logo" asp-controller="Home" asp-action="Index">Eventify</a>
                 <div class="nav-links">
                     <a class="active" asp-controller="Home" asp-action="Index">الرئيسية</a>
-                    <a href="#">الأحداث</a>
+                    @* <a href="#">الأحداث</a> *@
+                    <a asp-controller="MyEvents" asp-action="Index">أحداثي</a>
                     <a href="#">حجوزاتي</a>
                     <a href="#" class="btn btn-outline">تسجيل الدخول</a>
                 </div>
@@ -26,11 +27,10 @@
         </nav>
     </header>
 
-    <main>
+    <main style="margin-bottom:30px;margin-top:130px;">
         @RenderBody()
     </main>
 
-    <!-- الفوتر  -->
     <footer>
         <div class="container">
             <div class="footer-grid">
