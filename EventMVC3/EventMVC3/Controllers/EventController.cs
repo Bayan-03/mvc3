@@ -98,7 +98,7 @@ namespace EventMVC3.Controllers
 
             return View(filteredEvents); // عرض النتائج في صفحة Search.cshtml
         }
-        public IActionResult EventDate(string searchTerm)
+        public IActionResult EventDate()
         {
             return View();
         }

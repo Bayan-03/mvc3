@@ -1,12 +1,7 @@
-﻿<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تقويم عروضي</title>
-    <link href="~/css/Event/EvenDate.css" rel="stylesheet" />
-</head>
-<body>
+﻿@section Styles{
+    <link href="~/css/Event/eventDate.css" rel="stylesheet" />
+}
+
     <div class="calendar">
         <div class="calendar-header">
             <button id="prev-period">&#9664;</button>
@@ -20,7 +15,6 @@
             <button id="day-view-btn">يومي</button>
         </div>
 
-        <!-- عرض شهري -->
         <div class="month-view" id="month-view">
             <div class="calendar-weekdays">
                 <div>الأحد</div>
@@ -33,27 +27,27 @@
             </div>
 
             <div class="calendar-days" id="month-days">
-                <!-- الأيام سيتم إضافتها بواسطة الجافاسكربت -->
+                
             </div>
         </div>
 
-        <!-- عرض أسبوعي -->
+       
         <div class="week-view" id="week-view">
             <div class="calendar-weekdays" id="week-days-header">
-                <!-- عناوين الأيام سيتم إضافتها بواسطة الجافاسكربت -->
+              
             </div>
             <div class="week-days" id="week-days">
-                <!-- محتوى الأسبوع سيتم إضافته بواسطة الجافاسكربت -->
+               
             </div>
         </div>
 
-        <!-- عرض يومي -->
+        
         <div class="day-view" id="day-view">
             <div class="day-header" id="day-header">
-                <!-- عنوان اليوم سيتم إضافته بواسطة الجافاسكربت -->
+               
             </div>
             <div class="time-slots" id="time-slots">
-                <!-- الفترات الزمنية سيتم إضافتها بواسطة الجافاسكربت -->
+               
             </div>
         </div>
     </div>
@@ -62,5 +56,3 @@
         اليوم
     </button>
     <script src="~/js/EventDate.js"></script>
-</body>
-</html>

@@ -1,13 +1,13 @@
-﻿@import url("../header-footer.css");
-
-* {
-    padding: 0;
-    margin: 0;
+﻿:root {
+    --primary-color: #9C88FF;
+    --secondary-color: #7E22CE;
+    --dark-color: #1F2937;
+    --light-color: #F9FAFB;
+    --gray-color: #E5E7EB;
+    --success-color: #10B981;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
     background-color: #f5f5f5;
 }
 
