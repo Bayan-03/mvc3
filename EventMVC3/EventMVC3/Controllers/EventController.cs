@@ -21,7 +21,7 @@ namespace EventMVC3.Controllers
             return View(eventList);
         }
 
-        public IActionResult eventDetails(int Id) 
+        public IActionResult eventDetails(int Id)
         {
             var eventDetails = _db.Events
         .Include(e => e.Comments)      // تحميل التعليقات المرتبطة
@@ -81,8 +81,6 @@ namespace EventMVC3.Controllers
 
         //    return View("Index", filteredEvents); // عرض نفس صفحة Index لكن بالنتائج المفلترة
         //}
-
-      
         public IActionResult Search(string searchTerm)
         {
             if (string.IsNullOrEmpty(searchTerm))
@@ -100,7 +98,10 @@ namespace EventMVC3.Controllers
 
             return View(filteredEvents); // عرض النتائج في صفحة Search.cshtml
         }
-
+        public IActionResult EventDate(string searchTerm)
+        {
+            return View();
+        }
 
 
     }
