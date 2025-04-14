@@ -118,3 +118,32 @@
         padding: 8px 10px;
     }
 }
+
+
+/* تنسيقات صفحة التفاصيل */
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 1.5rem;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.card-footer {
+    background-color: #f8f9fa;
+    padding: 1rem 1.5rem;
+}
+
+dl.row dt {
+    font-weight: 600;
+    color: #555;
+}
+
+dl.row dd {
+    margin-bottom: 0.8rem;
+}

@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using EventMVC3.Models;
 using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System.Threading.Tasks;
 using EventMVC3.Data;
 
 namespace EventMVC3.Controllers
@@ -20,14 +22,59 @@ namespace EventMVC3.Controllers
         // GET: MyEvents
         public IActionResult Index()
         {
-            var events = _context.Events
-                .Include(e => e.CategoryNavigation)
-                .ToList();
-
+            var events = _context.Events.Include(e => e.CategoryNavigation).ToList();
             return View(events);
         }
 
         // GET: MyEvents/Create
+        //public IActionResult Create()
+        //{
+        //    ViewBag.Categories = _context.EventCategories.ToList();
+        //    return View(new Event());
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> Create(Event model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            var imageFile = Request.Form.Files["imageFile"];
+
+        //            if (imageFile != null && imageFile.Length > 0)
+        //            {
+        //                var uploadsFolder = Path.Combine(_env.WebRootPath, "images");
+        //                if (!Directory.Exists(uploadsFolder))
+        //                    Directory.CreateDirectory(uploadsFolder);
+
+        //                var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+        //                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+        //                await using (var stream = new FileStream(filePath, FileMode.Create))
+        //                {
+        //                    await imageFile.CopyToAsync(stream);
+        //                }
+
+        //                model.Image = "/images/" + uniqueFileName;
+        //            }
+
+        //            _context.Events.Add(model);
+        //            await _context.SaveChangesAsync();
+        //            return RedirectToAction(nameof(Index));
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            ModelState.AddModelError("", "حدث خطأ: " + ex.Message);
+        //        }
+        //    }
+
+        //    ViewBag.Categories = _context.EventCategories.ToList();
+        //    return View(model);
+        //}
+
+
+        [HttpGet]
         public IActionResult Create()
         {
             ViewBag.Categories = _context.EventCategories.ToList();
@@ -35,57 +82,86 @@ namespace EventMVC3.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Event model, IFormFile? imageFile)
+        public async Task<IActionResult> Create(Event model, IFormFile imageFile)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                if (imageFile != null)
-                {
-                    string uploadsFolder = Path.Combine(_env.WebRootPath, "images");
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await imageFile.CopyToAsync(stream);
-                    }
-
-                    model.Image = "/images/" + uniqueFileName;
-                }
-
-                _context.Events.Add(model);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewBag.Categories = _context.EventCategories.ToList();
+                return View(model);
             }
 
-            ViewBag.Categories = _context.EventCategories.ToList();
-            return View(model);
+            if (imageFile != null)
+            {
+                var fileName = Path.GetFileName(imageFile.FileName);
+                var filePath = Path.Combine("wwwroot/Images", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+
+                model.Image = "/Images/" + fileName;
+            }
+
+            _context.Events.Add(model);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
+
 
         // GET: MyEvents/Edit/5
         public IActionResult Edit(int? id)
         {
-            if (id == null) return NotFound();
+            if (id == null)
+                return NotFound();
 
             var eventItem = _context.Events.Find(id);
-            if (eventItem == null) return NotFound();
+            if (eventItem == null)
+                return NotFound();
 
             ViewBag.Categories = _context.EventCategories.ToList();
             return View(eventItem);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, Event model, IFormFile? imageFile)
+        public async Task<IActionResult> Edit(int id, Event model)
         {
-            if (id != model.Id) return NotFound();
+            if (id != model.Id)
+                return NotFound();
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var imageFile = Request.Form.Files["imageFile"];
                     var existingEvent = await _context.Events.FindAsync(id);
 
-                    // تحديث الحقول
+                    if (imageFile != null && imageFile.Length > 0)
+                    {
+                        var uploadsFolder = Path.Combine(_env.WebRootPath, "images");
+                        if (!Directory.Exists(uploadsFolder))
+                            Directory.CreateDirectory(uploadsFolder);
+
+                        if (!string.IsNullOrEmpty(existingEvent.Image))
+                        {
+                            var oldImagePath = Path.Combine(_env.WebRootPath, existingEvent.Image.TrimStart('/'));
+                            if (System.IO.File.Exists(oldImagePath))
+                                System.IO.File.Delete(oldImagePath);
+                        }
+
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        await using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(stream);
+                        }
+
+                        existingEvent.Image = "/images/" + uniqueFileName;
+                    }
+
+                    // تحديث الخصائص
                     existingEvent.Name = model.Name;
                     existingEvent.StartDate = model.StartDate;
                     existingEvent.FinishDate = model.FinishDate;
@@ -98,29 +174,9 @@ namespace EventMVC3.Controllers
                     existingEvent.Price = model.Price;
                     existingEvent.ConstraintAge = model.ConstraintAge;
 
-                    if (imageFile != null)
-                    {
-                        if (!string.IsNullOrEmpty(existingEvent.Image))
-                        {
-                            var oldImagePath = Path.Combine(_env.WebRootPath, existingEvent.Image.TrimStart('/'));
-                            if (System.IO.File.Exists(oldImagePath))
-                                System.IO.File.Delete(oldImagePath);
-                        }
-
-                        string uploadsFolder = Path.Combine(_env.WebRootPath, "images");
-                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
-                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await imageFile.CopyToAsync(stream);
-                        }
-
-                        existingEvent.Image = "/images/" + uniqueFileName;
-                    }
-
                     _context.Update(existingEvent);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -128,23 +184,40 @@ namespace EventMVC3.Controllers
                         return NotFound();
                     throw;
                 }
-                return RedirectToAction(nameof(Index));
             }
 
             ViewBag.Categories = _context.EventCategories.ToList();
             return View(model);
         }
 
-        // GET: MyEvents/Delete/5
-        public IActionResult Delete(int? id)
+        // GET: MyEvents/Details/5
+        public IActionResult Details(int? id)
         {
-            if (id == null) return NotFound();
+            if (id == null)
+                return NotFound();
 
             var eventItem = _context.Events
                 .Include(e => e.CategoryNavigation)
                 .FirstOrDefault(e => e.Id == id);
 
-            if (eventItem == null) return NotFound();
+            if (eventItem == null)
+                return NotFound();
+
+            return View(eventItem);
+        }
+
+        // GET: MyEvents/Delete/5
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var eventItem = _context.Events
+                .Include(e => e.CategoryNavigation)
+                .FirstOrDefault(e => e.Id == id);
+
+            if (eventItem == null)
+                return NotFound();
 
             return View(eventItem);
         }
@@ -165,6 +238,7 @@ namespace EventMVC3.Controllers
                 _context.Events.Remove(eventItem);
                 await _context.SaveChangesAsync();
             }
+
             return RedirectToAction(nameof(Index));
         }
 

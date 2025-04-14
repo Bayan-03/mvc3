@@ -1,23 +1,23 @@
-﻿@model Event
+﻿@model EventMVC3.Models.Event
 @{
     ViewData["Title"] = "حذف الحدث";
 }
 
-<div class="delete-confirmation">
+<div class="container mt-4">
     <h2>@ViewData["Title"]</h2>
     <hr />
 
     <div class="alert alert-danger">
         <h4>هل أنت متأكد من حذف هذا الحدث؟</h4>
-        <dl class="row">
+        <dl class="row mt-3">
             <dt class="col-sm-3">اسم الحدث:</dt>
             <dd class="col-sm-9">@Model.Name</dd>
 
             <dt class="col-sm-3">التصنيف:</dt>
             <dd class="col-sm-9">@Model.CategoryNavigation?.CategoryName</dd>
 
-            <dt class="col-sm-3">التاريخ:</dt>
-            <dd class="col-sm-9">@Model.StartDate.ToString("yyyy/MM/dd")</dd>
+            <dt class="col-sm-3">المكان:</dt>
+            <dd class="col-sm-9">@Model.PlaceName, @Model.City</dd>
 
             @if (!string.IsNullOrEmpty(Model.Image))
             {
@@ -31,9 +31,13 @@
 
     <form asp-action="Delete" method="post">
         <input type="hidden" asp-for="Id" />
-        <div class="form-actions">
-            <button type="submit" class="btn btn-danger">تأكيد الحذف</button>
-            <a asp-action="Index" class="btn btn-secondary">إلغاء</a>
+        <div class="form-group text-end">
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-trash"></i> تأكيد الحذف
+            </button>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-times"></i> إلغاء
+            </a>
         </div>
     </form>
 </div>

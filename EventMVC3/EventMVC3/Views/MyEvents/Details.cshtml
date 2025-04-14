@@ -1,42 +1,76 @@
-﻿@model EventMVC3.Models.Reservation
-
+﻿@model EventMVC3.Models.Event
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "تفاصيل الحدث";
 }
 
-<h1>Details</h1>
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3>@Model.Name</h3>
+            <p class="mb-0">@Model.CategoryNavigation?.CategoryName</p>
+        </div>
 
-<div>
-    <h4>Reservation</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Event)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Event.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Id)
-        </dd>
-    </dl>
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+        <div class="card-body">
+            <div class="row">
+                <!-- العمود الأول -->
+                <div class="col-md-6">
+                    @if (!string.IsNullOrEmpty(Model.Image))
+                    {
+                        <img src="@Model.Image" class="img-fluid rounded mb-4" alt="صورة الحدث">
+                    }
+
+                    <h5>معلومات الأساسية</h5>
+                    <hr />
+                    <dl class="row">
+                        <dt class="col-sm-4">المكان:</dt>
+                        <dd class="col-sm-8">@Model.PlaceName</dd>
+
+                        <dt class="col-sm-4">المدينة:</dt>
+                        <dd class="col-sm-8">@Model.City</dd>
+
+                        <dt class="col-sm-4">تاريخ البداية:</dt>
+                        <dd class="col-sm-8">@Model.StartDate.ToString("yyyy/MM/dd")</dd>
+
+                        <dt class="col-sm-4">تاريخ النهاية:</dt>
+                        <dd class="col-sm-8">@(Model.FinishDate?.ToString("yyyy/MM/dd") ?? "لا يوجد")</dd>
+                    </dl>
+                </div>
+
+                <!-- العمود الثاني -->
+                <div class="col-md-6">
+                    <h5>التفاصيل الإضافية</h5>
+                    <hr />
+                    <dl class="row">
+                        <dt class="col-sm-4">وقت البداية:</dt>
+                        <dd class="col-sm-8">@(Model.StartTime?.ToString(@"hh\:mm") ?? "غير محدد")</dd>
+
+                        <dt class="col-sm-4">وقت النهاية:</dt>
+                        <dd class="col-sm-8">@(Model.FineshTime?.ToString(@"hh\:mm") ?? "غير محدد")</dd>
+
+                        <dt class="col-sm-4">السعر:</dt>
+                        <dd class="col-sm-8">@(Model.Price?.ToString("C") ?? "مجاني")</dd>
+
+                        <dt class="col-sm-4">القيود العمرية:</dt>
+                        <dd class="col-sm-8">@(Model.ConstraintAge ?? "لا توجد")</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- الوصف -->
+            <div class="mt-4">
+                <h5>وصف الحدث</h5>
+                <hr />
+                <p class="lead">@Model.Discription</p>
+            </div>
+        </div>
+
+        <div class="card-footer text-end">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                <i class="fas fa-edit"></i> تعديل
+            </a>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> العودة للقائمة
+            </a>
+        </div>
+    </div>
 </div>
