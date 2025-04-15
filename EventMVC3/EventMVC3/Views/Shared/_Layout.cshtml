@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - Home</title>
-      @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />   *@
+       <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />   
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="~/css/header-footer.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/EventMVC3.styles.css" asp-append-version="true" />
@@ -13,27 +13,36 @@
 </head>
 <body>
     <header>
+        @{
+            var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+            var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+        }
         <nav class="navbar">
-            <div class="container">
+            <div class="containertop">
                 <a class="logo" asp-controller="Home" asp-action="Index">Eventify</a>
                 <div class="nav-links">
-                    <a class="active" asp-controller="Home" asp-action="Index">الرئيسية</a>
-                    <a asp-controller="Event" asp-action="EventDate">التقويم</a>
-                    @* <a href="#">الأحداث</a> *@
-                    <a asp-controller="MyEvents" asp-action="Index">أحداثي</a>
-                    <a href="#">حجوزاتي</a>
+                     <a class="@(currentController == "Home" && currentAction == "Index" ? "active" : "")"
+                       asp-controller="Home" asp-action="Index">الرئيسية</a>
+
+                    <a class="@(currentController == "Event" && currentAction == "EventDate" ? "active" : "")"
+                       asp-controller="Event" asp-action="EventDate">التقويم</a>
+
+                    <a class="@(currentController == "MyEvents" && currentAction == "Index" ? "active" : "")"
+                       asp-controller="MyEvents" asp-action="Index">أحداثي</a>
+
+
                     <a href="#" class="btn btn-outline">تسجيل الدخول</a>
                 </div>
             </div>
         </nav>
     </header>
-
-    <main style="margin-bottom:30px;margin-top:130px;">
+    @* style="margin-bottom:30px;margin-top:130px;" *@
+    <main >
         @RenderBody()
     </main>
 
     <footer>
-        <div class="container">
+        <div class="containertop">
             <div class="footer-grid">
                 <div class="footer-col">
                     <h3>Eventify</h3>
@@ -87,7 +96,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/header.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+
 </body>
 </html>
