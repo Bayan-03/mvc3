@@ -38,70 +38,35 @@ namespace EventMVC3.Controllers
             //return View(ev);
         }
 
-        //public IActionResult Index(string? searchTerm)
-        //{
-        //    var eventList = _db.Events.AsQueryable();
-
-        //    if (!string.IsNullOrEmpty(searchTerm))
-        //    {
-        //        eventList = eventList.Where(e => e.Name.Contains(searchTerm) || e.City.Contains(searchTerm) || e.Discription.Contains(searchTerm));
-        //    }
-
-        //    return View(eventList.ToList());
-        //}
-
-        //public IActionResult Index(string name, string searchTerm)
-        //{
-        //    Console.WriteLine($"بحث عن: {searchTerm}"); // طباعة القيمة في الكونسول للتحقق
-        //    List<EventCategory> category = _db.EventCategories.ToList();
-        //    int? id = category.Where(c => c.CategoryName == name).Select(c => c.Id).FirstOrDefault();
-
-        //    IEnumerable<Event> eventList = _db.Events.Where(e => e.Category == id);
-
-        //    if (!string.IsNullOrEmpty(searchTerm))
-        //    {
-        //        eventList = eventList.Where(e => e.Name.Contains(searchTerm) || e.City.Contains(searchTerm) || e.Discription.Contains(searchTerm));
-        //    }
-
-        //    ViewBag.n = name;
-        //    return View(eventList.ToList());
-        //}
-
-
-        //public IActionResult Search(string searchTerm)
-        //{
-        //    if (string.IsNullOrEmpty(searchTerm))
-        //    {
-        //        return RedirectToAction("Index"); // إذا كان البحث فارغًا، ارجع للصفحة الرئيسية
-        //    }
-
-        //    var filteredEvents = _db.Events
-        //                            .Where(e => e.Name.Contains(searchTerm) || e.City.Contains(searchTerm))
-        //                            .ToList();
-
-        //    return View("Index", filteredEvents); // عرض نفس صفحة Index لكن بالنتائج المفلترة
-        //}
-        public IActionResult Search(string searchTerm)
-        {
-            if (string.IsNullOrEmpty(searchTerm))
-            {
-                return RedirectToAction("Index"); // إذا كان البحث فارغًا، ارجع للصفحة الرئيسية
-            }
-
-            IEnumerable<Event> filteredEvents = _db.Events
-                                    .Where(e => e.Name.Contains(searchTerm) ||
-                                                e.City.Contains(searchTerm) ||
-                                                e.Discription.Contains(searchTerm))
-                                    .ToList();
-
-            ViewBag.SearchTerm = searchTerm; // حفظ مصطلح البحث لعرضه في الفيو
-
-            return View(filteredEvents); // عرض النتائج في صفحة Search.cshtml
-        }
+        
         public IActionResult EventDate()
         {
             return View();
         }
+
+
+        [HttpGet]
+        public JsonResult Search(string searchTerm, string n)
+        {
+            List<EventCategory> category = _db.EventCategories.ToList();
+            int id = category.Where(c => c.CategoryName == n).Select(c => c.Id).FirstOrDefault();
+
+            var events = _db.Events
+                .Where(e =>
+                    (string.IsNullOrEmpty(searchTerm) || e.Name.Contains(searchTerm)) &&
+                    (string.IsNullOrEmpty(n) || e.Category ==id )) // افترضنا أن n تمثل التصنيف مثلاً
+                .Select(e => new
+                {
+                    id = e.Id,
+                    name = e.Name,
+                    discription = e.Discription,
+                    image = e.Image
+                })
+                .ToList();
+
+            return Json(events);
+        }
+
 
 
     }

@@ -8,9 +8,10 @@
     <link rel="stylesheet" href="~/css/Event/Index.css" />
 }
 
-<form asp-action="Search" asp-controller="Event" method="get" class="search-bar">
-    <input type="text" name="searchTerm" placeholder="ابحث عن حدث..." />
-    <button type="submit"><img src="~/icons/search-interface-symbol.png" alt="بحث"></button>
+
+<form  method="get" class="search-bar">
+    <input type="text" name="searchTerm" id="searchInput" data-n="@ViewBag.n" placeholder="ابحث عن حدث..." />
+    <button><img src="~/icons/search-interface-symbol.png" alt="بحث"></button>
 </form>
 
 <div class="container">
@@ -25,7 +26,7 @@
                 <article>
                     <div class="article-wrapper">
                         <figure>
-                            <img src=@e.Image alt="" />
+                            <img src="~/images/@e.Image" alt="" />
                         </figure>
                         <div class="article-body">
                             <h2>@e.Name</h2>
@@ -45,5 +46,63 @@
      </div>
  </div>
 
+
+<script src="https://code.jquery.com/jquery-3.7.1.slim.js" integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#searchInput').on('keyup', function () {
+            var searchTerm = $(this).val();
+            var nValue = $(this).data('n'); // أخذ قيمة ViewBag.n
+
+            $.ajax({
+                url: '/Event/Search',
+                type: 'GET',
+                data: { searchTerm: searchTerm, n: nValue },
+                success: function (data) {
+                    $('.articles').empty();
+
+                    if (data.length === 0) {
+                        $('.articles').append('<p>لا توجد نتائج.</p>');
+                        return;
+                    }
+
+                    data.forEach(function (e) {
+                        var article = `
+                                <article>
+                                    <div class="article-wrapper">
+                                        <figure>
+                                            <img src="/images/${e.image}" alt="" />
+                                        </figure>
+                                        <div class="article-body">
+                                            <h2>${e.name}</h2>
+                                            <p>${e.discription}</p>
+                                            <a class="read-more" href="/Event/eventDetails/${e.id}">
+                                                إقرأ المزيد
+                                                <img class="icon" src="/icons/angle-small-left.png" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </article>
+                            `;
+                        $('.articles').append(article);
+                    });
+                },
+                error: function () {
+                    console.error("حدث خطأ أثناء تنفيذ البحث.");
+                }
+            });
+        });
+    });
+    //إيقاف زر الenter
+    $(document).ready(function () {
+        $('#searchInput').on('keypress', function (e) {
+            if (e.which === 13) {
+                e.preventDefault(); // يمنع إرسال الفورم أو تنفيذ أي أكشن
+            }
+        });
+    });
+
+</script>
 
 
