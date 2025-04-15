@@ -1,7 +1,9 @@
-﻿
+﻿@model IEnumerable<Event>
 @* عشان نخلي الستايل لذا الفيو بس  *@
 @section Styles {
     <link rel="stylesheet" href="~/css/Home.css" />
+
+    
 }
 
 @{
@@ -12,7 +14,7 @@
 
 <!-- قسم الهيرو -->
 <section class="hero">
-    <div class="container">
+    <div class="containertop">
         <h1>احجز أفضل الأحداث بسهولة!</h1>
         <p class="lead">اختر من بين مئات الفعاليات، حفلات، مؤتمرات، وأنشطة ترفيهية</p>
         <div class="hero-buttons">
@@ -24,10 +26,10 @@
 
 
 
-<div class="container">
+<div class="containertop">
     <h4 class="section-title">التصنيفات</h4>
 
-    <div class="big-contant">
+    <div class="d-flex" style="flex-wrap:wrap;">
         @{
             int t = 0;
         }
@@ -35,25 +37,24 @@
         {
             t++;
             <a asp-controller="Event" asp-action="Index" asp-route-name="@card["name"]">
-                    <div class="card">
-                        <div class="content">
-                            <img src=@card["icon"] alt="">
-                            <p class="para">
-                                @card["name"]
-                            </p>
-                        </div>
+                <div class="card">
+                    <div class="content">
+                        <img src="~/icons/@card["icon"]" alt="">
+                        <p class="para18">
+                            @card["name"]
+                        </p>
                     </div>
-                </a>
-            
-            @* اللي ماسكته تحط حقها بليز ******************************************************* *@
-           
+                </div>
+            </a>
 
-    }
+
+
+        }
     </div>
- </div>
+</div>
 <!-- قسم كيف يعمل الموقع -->
 <section id="how-it-works" class="how-it-works">
-    <div class="container">
+    <div class="containertop">
         <h2 class="section-title">كيف تحجز حدثك في 3 خطوات بسيطة</h2>
 
         <div class="steps">
@@ -92,9 +93,35 @@
     <h4 class="section-title">مقترحه لك</h4>
     <div class="big-contant">
         <section class="articles">
+            @{
+                int i = 0;
+            }
+            @foreach (var e in Model)
+            {
+                <article>
+                    <div class="article-wrapper">
+                        <figure>
+                            <img src=@e.Image alt="" />
+                        </figure>
+                        <div class="article-body">
+                            <h2>@e.Name</h2>
+                            <p>
+                                @e.Discription
+                            </p>
+                            <a class="read-more" asp-action="eventDetails" asp-controller="Event" asp-route-Id="@e.Id">
+                                إقرأ المزيد
+                                <img class="icon" src="../../icons/angle-small-left.png" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </article> 
+                i++;
+                if (i == 6){ break; }
+            }
 
-            <article>
-                <div class="article-wrapper">
+
+               @*  <article>
+                    <div class="article-wrapper">
                     <figure>
                         <img src="../images/advantuer/boats.jpg" alt="" />
                     </figure>
@@ -110,9 +137,9 @@
                     </div>
                 </div>
             </article>
+             *@
 
-
-            <article>
+            @* <article>
                 <div class="article-wrapper">
                     <figure>
                         <img src="../images/2024-05-04 (8).png" alt="" />
@@ -148,7 +175,7 @@
                     </div>
                 </div>
             </article>
-
+ *@
 
 
         </section>
@@ -157,7 +184,7 @@
 
 <!-- قسم المميزات -->
 <section class="features">
-    <div class="container">
+    <div class="containertop">
         <h2 class="section-title">لماذا تختار منصتنا؟</h2>
 
         <div class="features-grid">

@@ -33,8 +33,9 @@ namespace EventMVC3.Controllers
 
         public IActionResult Index()
         {
+            IEnumerable<Event> eventList = _db.Events.ToList();
             creatList();
-            return View();
+            return View(eventList);
         }
 
         public IActionResult Privacy()
