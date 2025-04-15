@@ -20,7 +20,15 @@ namespace EventMVC3.Controllers
             ViewBag.n = name;
             return View(eventList);
         }
-
+        [HttpGet]
+        public IActionResult booking(int idnumvent )
+        {
+            
+            //List<Reservation> book = _db.Reservations.ToList();
+            //int? id = book.Where(c => c.IdNumber == idnumvent).Select(c => c.IdNumber).FirstOrDefault();
+            IEnumerable<Event> eventList = _db.Events.Where(e => e.Id == idnumvent).ToList();
+            return View();
+        }
         public IActionResult eventDetails(int Id)
         {
             var eventDetails = _db.Events

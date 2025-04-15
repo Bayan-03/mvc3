@@ -36,7 +36,8 @@
                 </div>
 
             </div>
-            <a href="../B&G/chose.html" class="btn-de">للحجز</a>
+            @* ******************** *@
+            <a asp-action="booking" asp-controller="Event" asp-route-idnumvent="@Model.Id" class="btn-de">للحجز</a>
         </div>
         <div class="pict-container">
             <img src="~/images/@Model.Image" alt="">
