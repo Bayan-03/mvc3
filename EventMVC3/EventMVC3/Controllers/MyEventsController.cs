@@ -81,15 +81,38 @@ namespace EventMVC3.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //public async Task<IActionResult> Create(Event model, IFormFile imageFile)
+        //{
+
+        //        ViewBag.Categories = _context.EventCategories.ToList();
+        //        return View(model);
+
+
+        //    if (imageFile != null)
+        //    {
+        //        var fileName = Path.GetFileName(imageFile.FileName);
+        //        var filePath = Path.Combine("wwwroot/Images", fileName);
+
+        //        using (var stream = new FileStream(filePath, FileMode.Create))
+        //        {
+        //            await imageFile.CopyToAsync(stream);
+        //        }
+
+        //        model.Image = "/Images/" + fileName;
+        //    }
+
+        //    _context.Events.Add(model);
+        //    await _context.SaveChangesAsync();
+
+        //    return RedirectToAction(nameof(Index));
+        //}
+
+
         [HttpPost]
         public async Task<IActionResult> Create(Event model, IFormFile imageFile)
         {
-            if (!ModelState.IsValid)
-            {
-                ViewBag.Categories = _context.EventCategories.ToList();
-                return View(model);
-            }
-
+            
             if (imageFile != null)
             {
                 var fileName = Path.GetFileName(imageFile.FileName);
@@ -105,24 +128,29 @@ namespace EventMVC3.Controllers
 
             _context.Events.Add(model);
             await _context.SaveChangesAsync();
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Categories = _context.EventCategories.ToList();
+                return RedirectToAction("Index");
+            }
 
-            return RedirectToAction(nameof(Index));
+            return View();
         }
 
 
         // GET: MyEvents/Edit/5
-        public IActionResult Edit(int? id)
+        [HttpGet]
+        public IActionResult Edit(int id)
         {
-            if (id == null)
-                return NotFound();
+            var model = _context.Events.FirstOrDefault(e => e.Id == id);
 
-            var eventItem = _context.Events.Find(id);
-            if (eventItem == null)
+            if (model == null)
                 return NotFound();
 
             ViewBag.Categories = _context.EventCategories.ToList();
-            return View(eventItem);
+            return View(model);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Edit(int id, Event model)
@@ -132,8 +160,6 @@ namespace EventMVC3.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
                     var imageFile = Request.Form.Files["imageFile"];
                     var existingEvent = await _context.Events.FindAsync(id);
 
@@ -176,16 +202,10 @@ namespace EventMVC3.Controllers
 
                     _context.Update(existingEvent);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Index");
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EventExists(model.Id))
-                        return NotFound();
-                    throw;
-                }
-            }
-
+                
+  
             ViewBag.Categories = _context.EventCategories.ToList();
             return View(model);
         }
