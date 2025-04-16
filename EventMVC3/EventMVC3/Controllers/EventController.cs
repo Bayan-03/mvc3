@@ -23,12 +23,36 @@ namespace EventMVC3.Controllers
         [HttpGet]
         public IActionResult booking(int idnumvent )
         {
-            
+
             //List<Reservation> book = _db.Reservations.ToList();
             //int? id = book.Where(c => c.IdNumber == idnumvent).Select(c => c.IdNumber).FirstOrDefault();
-            IEnumerable<Event> eventList = _db.Events.Where(e => e.Id == idnumvent).ToList();
-            return View();
+            //IEnumerable<Event> eventList = _db.Events.Where(e => e.Id == idnumvent).ToList();
+            Event selectedEvent = _db.Events.FirstOrDefault(e => e.Id == idnumvent);
+            if (selectedEvent == null)
+                return NotFound();
+            var reservation = new Reservation { EventId = selectedEvent.Id  };
+
+
+            return View(reservation);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult booking(Reservation reservation)
+        {
+
+           
+                _db.Reservations.Add(reservation);
+                _db.SaveChanges();
+                return RedirectToAction("Index", "Home"); // أو صفحة تأكيد
+            
+
+            //return View(reservation); // يرجع للفورم لو فيه خطأ
+        }
+
+
+
+
+
         public IActionResult eventDetails(int Id)
         {
             var eventDetails = _db.Events
