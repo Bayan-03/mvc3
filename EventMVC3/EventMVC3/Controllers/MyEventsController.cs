@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Threading.Tasks;
 using EventMVC3.Data;
+using Microsoft.Extensions.FileSystemGlobbing;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EventMVC3.Controllers
 {
@@ -137,78 +139,153 @@ namespace EventMVC3.Controllers
             return View();
         }
 
-
-        // GET: MyEvents/Edit/5
-        [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var model = _context.Events.FirstOrDefault(e => e.Id == id);
-
-            if (model == null)
+            var eventItem = await _context.Events.FindAsync(id);
+            if (eventItem == null)
+            {
                 return NotFound();
+            }
 
-            ViewBag.Categories = _context.EventCategories.ToList();
-            return View(model);
+            var categories = await _context.EventCategories.ToListAsync();
+
+            
+
+            ViewBag.Categories = new SelectList(categories, "Id", "CategoryName", eventItem.Category);
+
+            return View(eventItem);
         }
 
 
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Event model)
         {
             if (id != model.Id)
                 return NotFound();
+            foreach (var key in ModelState.Keys)
+            {
+                var state = ModelState[key];
+                foreach (var error in state.Errors)
+                {
+                    Console.WriteLine($"❌ خطأ في الحقل '{key}': {error.ErrorMessage}");
+                }
+            }
 
             if (ModelState.IsValid)
             {
-                    var imageFile = Request.Form.Files["imageFile"];
-                    var existingEvent = await _context.Events.FindAsync(id);
-
-                    if (imageFile != null && imageFile.Length > 0)
-                    {
-                        var uploadsFolder = Path.Combine(_env.WebRootPath, "images");
-                        if (!Directory.Exists(uploadsFolder))
-                            Directory.CreateDirectory(uploadsFolder);
-
-                        if (!string.IsNullOrEmpty(existingEvent.Image))
-                        {
-                            var oldImagePath = Path.Combine(_env.WebRootPath, existingEvent.Image.TrimStart('/'));
-                            if (System.IO.File.Exists(oldImagePath))
-                                System.IO.File.Delete(oldImagePath);
-                        }
-
-                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
-                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                        await using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await imageFile.CopyToAsync(stream);
-                        }
-
-                        existingEvent.Image = "/images/" + uniqueFileName;
-                    }
-
-                    // تحديث الخصائص
-                    existingEvent.Name = model.Name;
-                    existingEvent.StartDate = model.StartDate;
-                    existingEvent.FinishDate = model.FinishDate;
-                    existingEvent.StartTime = model.StartTime;
-                    existingEvent.FineshTime = model.FineshTime;
-                    existingEvent.PlaceName = model.PlaceName;
-                    existingEvent.City = model.City;
-                    existingEvent.Discription = model.Discription;
-                    existingEvent.Category = model.Category;
-                    existingEvent.Price = model.Price;
-                    existingEvent.ConstraintAge = model.ConstraintAge;
-
-                    _context.Update(existingEvent);
+                try
+                {
+                    _context.Update(model);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Index");
+                    return RedirectToAction(nameof(Index));
                 }
-                
-  
-            ViewBag.Categories = _context.EventCategories.ToList();
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.Events.Any(e => e.Id == model.Id))
+                        return NotFound();
+                    else
+                        throw;
+                }
+            }
+
+            // ✅ هذا ضروري جداً هنا!
+            var categories = await _context.EventCategories.ToListAsync();
+            ViewBag.Categories = new SelectList(categories, "Id", "CategoryName", model.Category);
+
             return View(model);
         }
+
+
+        // التحقق من وجود الحدث بناءً على ID
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //[HttpPost]
+        //public async Task<IActionResult> Edit(Event model, IFormFile imageFile)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        ViewBag.Categories = _context.EventCategories.ToList();
+        //        return View(model);
+        //    }
+
+        //    var existingEvent = await _context.Events.FindAsync(model.Id);
+        //    if (existingEvent == null)
+        //        return NotFound();
+
+        //    if (imageFile != null && imageFile.Length > 0)
+        //    {
+        //        var uploadsFolder = Path.Combine(_env.WebRootPath, "images");
+        //        if (!Directory.Exists(uploadsFolder))
+        //            Directory.CreateDirectory(uploadsFolder);
+
+        //        // حذف القديمة
+        //        if (!string.IsNullOrEmpty(existingEvent.Image))
+        //        {
+        //            var oldPath = Path.Combine(_env.WebRootPath, existingEvent.Image.TrimStart('/'));
+        //            if (System.IO.File.Exists(oldPath))
+        //                System.IO.File.Delete(oldPath);
+        //        }
+
+        //        var uniqueName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+        //        var filePath = Path.Combine(uploadsFolder, uniqueName);
+        //        using var stream = new FileStream(filePath, FileMode.Create);
+        //        await imageFile.CopyToAsync(stream);
+
+        //        existingEvent.Image = "/images/" + uniqueName;
+        //    }
+
+        //    // تحديث البيانات
+        //    existingEvent.Name = model.Name;
+        //    existingEvent.Category = model.Category;
+        //    existingEvent.StartDate = model.StartDate;
+        //    existingEvent.FinishDate = model.FinishDate;
+        //    existingEvent.StartTime = model.StartTime;
+        //    existingEvent.FineshTime = model.FineshTime;
+        //    existingEvent.PlaceName = model.PlaceName;
+        //    existingEvent.City = model.City;
+        //    existingEvent.ConstraintAge = model.ConstraintAge;
+        //    existingEvent.Discription = model.Discription;
+        //    existingEvent.Price = model.Price;
+
+        //    _context.Events.Update(existingEvent);
+        //    await _context.SaveChangesAsync();
+
+        //    return RedirectToAction(nameof(Index));
+        //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // GET: MyEvents/Details/5
         public IActionResult Details(int? id)

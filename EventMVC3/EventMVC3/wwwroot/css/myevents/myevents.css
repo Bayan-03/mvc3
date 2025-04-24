@@ -1,5 +1,5 @@
 ﻿/* ملف تصميم مخصص لصفحات أحداثي فقط */
-.myevents-container {
+/*.myevents-container {
     max-width: 1200px;
     margin: 40px auto;
     padding: 20px;
@@ -61,10 +61,10 @@
         font-size: 50px;
         margin-bottom: 15px;
         color: #bdc3c7;
-    }
+    }*/
 
 /* تنسيقات النماذج */
-.event-form-container,
+/*.event-form-container,
 .delete-confirmation {
     max-width: 800px;
     margin: 40px auto;
@@ -102,10 +102,10 @@
     .current-image img {
         border: 1px solid #ddd;
         border-radius: 4px;
-    }
+    }*/
 
 /* تعديلات للعرض على الجوال */
-@media (max-width: 768px) {
+/*@media (max-width: 768px) {
     .myevents-container,
     .event-form-container,
     .delete-confirmation {
@@ -117,11 +117,11 @@
     .myevents-table td {
         padding: 8px 10px;
     }
-}
+}*/
 
 
 /* تنسيقات صفحة التفاصيل */
-.card {
+/*.card {
     border-radius: 10px;
     overflow: hidden;
 }
@@ -146,4 +146,4 @@ dl.row dt {
 
 dl.row dd {
     margin-bottom: 0.8rem;
-}
+}*/
