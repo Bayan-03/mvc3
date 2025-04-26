@@ -220,15 +220,17 @@
 }
 
 
+/*comment*/
 .search-bar {
-    width: 100%;
+    width: 30%;
     max-width: 50%;
-    height: 50px;
-    margin: 100px auto;
+    height: 70px;
+    margin-right: 50px;
+    margin-bottom: 70px;
     background: #F5F6FA;
     display: flex;
     align-items: center;
-    border-radius: 60px;
+    border-radius: 15px;
     border: 1px solid #9C88FF;
     padding: 10px 20px;
     box-shadow: 0 5px 5px rgba(24, 40, 59, 0.133);
@@ -260,3 +262,7 @@
     background: none;
     cursor: pointer;
 }
+
+
+
+
