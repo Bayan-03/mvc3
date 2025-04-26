@@ -9,42 +9,54 @@
 }
 
 
-<form  method="get" class="search-bar">
-    <input type="text" name="searchTerm" id="searchInput" data-n="@ViewBag.n" placeholder="ابحث عن حدث..." />
-    <button><img src="~/icons/search-interface-symbol.png" alt="بحث"></button>
-</form>
+@if (!Model.Any())
+{
+    <div class="containerr">
+        <img class="img-checkk" src="~/icons/sad-tear.png" alt="">
+        <h1 id="headd">لا يوجد احداث للحجز!</h1>
+        <a class="btnn" asp-controller="Home" asp-action="Index">الـــعـــودة للــرئــيـســـيـــة</a>
+    </div>
+}
+else
+{
+    <form method="get" class="search-bar">
+        <input type="text" name="searchTerm" id="searchInput" data-n="@ViewBag.n" placeholder="ابحث عن حدث..." />
+        <button><img src="~/icons/search-interface-symbol.png" alt="بحث"></button>
+    </form>
 
-<div class="container">
-    <h4 class="heading-colerd">@ViewBag.n </h4>
+    <div class="container">
+        <h4 class="heading-colerd">@ViewBag.n </h4>
 
-    <div class="big-contant">
+        <div class="big-contant">
 
-        <section class="articles">
+            <section class="articles">
 
-            @foreach(var e in Model)
-            {
-                <article>
-                    <div class="article-wrapper">
-                        <figure>
-                            <img src="~/images/@e.Image" alt="" />
-                        </figure>
-                        <div class="article-body">
-                            <h2>@e.Name</h2>
-                            <p>
-                                @e.Discription
-                            </p>
-                            <a class="read-more" asp-action="eventDetails" asp-controller="Event" asp-route-Id="@e.Id">
-                                إقرأ المزيد
-                                <img class="icon" src="../../icons/angle-small-left.png" alt="">
-                            </a>
+
+                @foreach (var e in Model)
+                {
+                    <article>
+                        <div class="article-wrapper">
+                            <figure>
+                                <img src="~/images/@e.Image" alt="" />
+                            </figure>
+                            <div class="article-body">
+                                <h2>@e.Name</h2>
+                                <p>
+                                    @e.Discription
+                                </p>
+                                <a class="read-more" asp-action="eventDetails" asp-controller="Event" asp-route-Id="@e.Id">
+                                    إقرأ المزيد
+                                    <img class="icon" src="../../icons/angle-small-left.png" alt="">
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                </article>
-            }
+                    </article>
+                }
 
-         </section>
-     </div>
- </div>
+            </section>
+        </div>
+    </div>
+}
 
 
 <script src="https://code.jquery.com/jquery-3.7.1.slim.js" integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>

@@ -100,6 +100,27 @@ namespace EventMVC3.Controllers
         }
 
 
+        [HttpPost]
+        public IActionResult AddComment(int eventId, string commentText)
+        {
+            if (string.IsNullOrWhiteSpace(commentText))
+                return RedirectToAction("eventDetails", new { Id = eventId });
+
+            Comment newComment = new Comment
+            {
+                EventId = eventId,
+                UserId = 1, // المستخدم الثابت
+                Comment1 = commentText,
+            };
+
+            _db.Comments.Add(newComment);
+            _db.SaveChanges();
+            // نعيد التوجيه مع Fragment يدويًا
+            return Redirect($"/Event/eventDetails/{eventId}#comments-section");
+        }
+
+
+
 
     }
 }
