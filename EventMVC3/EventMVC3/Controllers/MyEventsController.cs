@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EventMVC3.Data;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using EventMVC3.ModelView;
 
 namespace EventMVC3.Controllers
 {
@@ -139,6 +140,10 @@ namespace EventMVC3.Controllers
             return View();
         }
 
+
+
+
+
         public async Task<IActionResult> Edit(int id)
         {
             var eventItem = await _context.Events.FindAsync(id);
@@ -158,47 +163,78 @@ namespace EventMVC3.Controllers
 
 
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, Event model)
+        //{
+        //    if (id != model.Id)
+        //        return NotFound();
+        //    
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _context.Update(model);
+        //            await _context.SaveChangesAsync();
+        //            return RedirectToAction(nameof(Index));
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!_context.Events.Any(e => e.Id == model.Id))
+        //                return NotFound();
+        //            else
+        //                throw;
+        //        }
+        //    }
+
+        //    var categories = await _context.EventCategories.ToListAsync();
+        //    ViewBag.Categories = new SelectList(categories, "Id", "CategoryName", model.Category);
+
+        //    return View(model);
+        //}
+        //*****************************************************************************************************
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Event model)
+        public async Task<IActionResult> Edit(int id, EventModelViewForEdit viewModel)
         {
-            if (id != model.Id)
-                return NotFound();
-            foreach (var key in ModelState.Keys)
+            if (id != viewModel.Id)
             {
-                var state = ModelState[key];
-                foreach (var error in state.Errors)
-                {
-                    Console.WriteLine($"❌ خطأ في الحقل '{key}': {error.ErrorMessage}");
-                }
+                return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
+                var eventEntity = await _context.Events.FindAsync(id);
+
+                if (eventEntity == null)
                 {
-                    _context.Update(model);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_context.Events.Any(e => e.Id == model.Id))
-                        return NotFound();
-                    else
-                        throw;
-                }
+
+                // تحويل ViewModel إلى Model
+                eventEntity.Name = viewModel.Name;
+                eventEntity.StartDate = viewModel.StartDate;
+                eventEntity.FinishDate = viewModel.FinishDate;
+                eventEntity.StartTime = viewModel.StartTime;
+                eventEntity.FineshTime = viewModel.FineshTime;
+                eventEntity.PlaceName = viewModel.PlaceName;
+                eventEntity.City = viewModel.City;
+                eventEntity.Discription = viewModel.Discription;
+                eventEntity.Category = viewModel.Category;
+
+                // حفظ التغييرات في قاعدة البيانات
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
             }
 
-            // ✅ هذا ضروري جداً هنا!
-            var categories = await _context.EventCategories.ToListAsync();
-            ViewBag.Categories = new SelectList(categories, "Id", "CategoryName", model.Category);
-
-            return View(model);
+            // إعادة عرض النموذج في حالة وجود خطأ في الفاليديشن
+            return View(viewModel);
         }
 
-
-        // التحقق من وجود الحدث بناءً على ID
+        //*************************************************************************************************************************
 
 
 
