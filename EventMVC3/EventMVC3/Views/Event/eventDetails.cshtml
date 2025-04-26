@@ -28,7 +28,7 @@
                 </div>
                 <div class="info">
                     <img src="../../icons/schedule.png" alt="">
-                    <h3 id="det">يبدأ في @($"{Model.StartDate:dd/MM/yyyy}") ينتهي في @($"{Model.FinishDate:dd/MM/yyyy}")</h3>
+                    <h3 id="det">من @($"{Model.StartDate:dd/MM/yyyy}") إلى@($"{Model.FinishDate:dd/MM/yyyy}")</h3>
                 </div>
                 <div class="info">
                     <img src="../../icons/duration-alt.png" alt="">
@@ -36,8 +36,26 @@
                 </div>
 
             </div>
-            @* ******************** *@
-            <a asp-action="booking" asp-controller="Event" asp-route-idnumvent="@Model.Id" class="btn-de">للحجز</a>
+            @if (DateTime.Today < Model.StartDate)
+            {
+                <p style="color: #9C88FF;" class="fw-bold">
+                    <i class="fa-solid fa-hourglass-start" style="color: #9C88FF;"></i> لم يبدأ بعد
+                </p>
+            }
+            else if (DateTime.Today > Model.FinishDate)
+            {
+                <p style="color: #9C88FF;" class="fw-bold">
+                    <i class="fa-solid fa-circle-xmark" style="color: #9C88FF;"></i> انتهى الحدث
+                </p>
+            }
+            else
+            {
+                <a asp-action="booking" asp-controller="Event" asp-route-idnumvent="@Model.Id" class="btn-de">
+                     للحجز
+                </a>
+            }
+
+
         </div>
         <div class="pict-container">
             <img src="~/images/@Model.Image" alt="">
@@ -45,12 +63,19 @@
     </div>
 </section>
 @* <img src="~/icons/art-studies.png" />
- *@<section class="big-contant">
-    <h1 id="heading">التعليقات</h1>
-    <form asp-action="Search" asp-controller="Event" method="get" class="search-bar">
-        <input type="text" name="searchTerm" placeholder="ابحث عن حدث..." />
-        <button type="submit"><img src="~/icons/search-interface-symbol.png" alt="بحث"></button>
+ *@<section class="big-contant" id="comments-section">
+    <h1 id="heading">التعليقات</h1>    
+    <form asp-action="AddComment" asp-controller="Event" method="post" class="search-bar">
+        <input type="hidden" name="eventId" value="@Model.Id" />
+
+        <div class="input-group mb-3">
+            <input type="text" name="commentText" id="commentInput" class="form-control" placeholder="أضف تعليقك" required>
+            <button class="btn btn-group-vertical" type="submit">
+                <i class="fa-solid fa-square-plus fa-3x" style="color: #9C88FF;"></i>
+            </button>
+        </div>
     </form>
+
     @foreach(var comment in Model.Comments)
     {
         <div class="comments">
