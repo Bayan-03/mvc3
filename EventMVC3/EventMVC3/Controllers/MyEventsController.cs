@@ -8,6 +8,7 @@ using EventMVC3.Data;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using EventMVC3.ModelView;
+using EventMVC3.Helpers;
 
 namespace EventMVC3.Controllers
 {
@@ -213,18 +214,8 @@ namespace EventMVC3.Controllers
                     return NotFound();
                 }
 
-                // تحويل ViewModel إلى Model
-                eventEntity.Name = viewModel.Name;
-                eventEntity.StartDate = viewModel.StartDate;
-                eventEntity.FinishDate = viewModel.FinishDate;
-                eventEntity.StartTime = viewModel.StartTime;
-                eventEntity.FineshTime = viewModel.FineshTime;
-                eventEntity.PlaceName = viewModel.PlaceName;
-                eventEntity.City = viewModel.City;
-                eventEntity.Discription = viewModel.Discription;
-                eventEntity.Category = viewModel.Category;
+                eventEntity.MapFromViewModel(viewModel);
 
-                // حفظ التغييرات في قاعدة البيانات
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
