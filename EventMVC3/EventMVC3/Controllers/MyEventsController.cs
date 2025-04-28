@@ -1,14 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using EventMVC3.Models;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
-using System.Threading.Tasks;
-using EventMVC3.Data;
-using Microsoft.Extensions.FileSystemGlobbing;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using EventMVC3.ModelView;
+﻿using EventMVC3.Data;
 using EventMVC3.Helpers;
+using EventMVC3.Models;
+using EventMVC3.ModelView;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventMVC3.Controllers
 {
@@ -116,7 +112,7 @@ namespace EventMVC3.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Event model, IFormFile imageFile)
         {
-            
+
             if (imageFile != null)
             {
                 var fileName = Path.GetFileName(imageFile.FileName);
@@ -155,7 +151,7 @@ namespace EventMVC3.Controllers
 
             var categories = await _context.EventCategories.ToListAsync();
 
-            
+
 
             ViewBag.Categories = new SelectList(categories, "Id", "CategoryName", eventItem.Category);
 
@@ -369,6 +365,24 @@ namespace EventMVC3.Controllers
         private bool EventExists(int id)
         {
             return _context.Events.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> GetDatesToCalender()
+        {
+            var events = _context.Events;
+
+            var dates = await events.Select(x => new
+            {
+                x.Id,
+                x.Name,
+                x.PlaceName,
+                x.Discription,
+                x.StartDate,
+                x.StartTime
+            }).ToListAsync();
+            return Json(dates);
+
+
         }
     }
 }

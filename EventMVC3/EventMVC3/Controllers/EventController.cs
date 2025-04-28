@@ -21,7 +21,7 @@ namespace EventMVC3.Controllers
             return View(eventList);
         }
         [HttpGet]
-        public IActionResult booking(int idnumvent )
+        public IActionResult booking(int idnumvent)
         {
 
             //List<Reservation> book = _db.Reservations.ToList();
@@ -30,7 +30,7 @@ namespace EventMVC3.Controllers
             Event selectedEvent = _db.Events.FirstOrDefault(e => e.Id == idnumvent);
             if (selectedEvent == null)
                 return NotFound();
-            var reservation = new Reservation { EventId = selectedEvent.Id  };
+            var reservation = new Reservation { EventId = selectedEvent.Id };
 
 
             return View(reservation);
@@ -40,11 +40,11 @@ namespace EventMVC3.Controllers
         public IActionResult booking(Reservation reservation)
         {
 
-           
-                _db.Reservations.Add(reservation);
-                _db.SaveChanges();
-                return RedirectToAction("Index", "Home"); // أو صفحة تأكيد
-            
+
+            _db.Reservations.Add(reservation);
+            _db.SaveChanges();
+            return RedirectToAction("Index", "Home"); // أو صفحة تأكيد
+
 
             //return View(reservation); // يرجع للفورم لو فيه خطأ
         }
@@ -70,7 +70,7 @@ namespace EventMVC3.Controllers
             //return View(ev);
         }
 
-        
+
         public IActionResult EventDate()
         {
             return View();
@@ -86,7 +86,7 @@ namespace EventMVC3.Controllers
             var events = _db.Events
                 .Where(e =>
                     (string.IsNullOrEmpty(searchTerm) || e.Name.Contains(searchTerm)) &&
-                    (string.IsNullOrEmpty(n) || e.Category ==id )) // افترضنا أن n تمثل التصنيف مثلاً
+                    (string.IsNullOrEmpty(n) || e.Category == id)) // افترضنا أن n تمثل التصنيف مثلاً
                 .Select(e => new
                 {
                     id = e.Id,

@@ -1,58 +1,75 @@
-﻿@section Styles{
+﻿@section Styles {
     <link href="~/css/Event/eventDate.css" rel="stylesheet" />
 }
+<br />
+<br />
+<br />
+<div class="calendar">
+    <div class="calendar-header">
+        <button id="prev-period">&#9664;</button>
+        <div class="calendar-title" id="period-title">شهر سنة</div>
+        <button id="next-period">&#9654;</button>
+    </div>
 
-    <div class="calendar">
-        <div class="calendar-header">
-            <button id="prev-period">&#9664;</button>
-            <div class="calendar-title" id="period-title">شهر سنة</div>
-            <button id="next-period">&#9654;</button>
+    <div class="view-options">
+        <button id="month-view-btn" class="active">شهري</button>
+        <button id="week-view-btn">أسبوعي</button>
+        <button id="day-view-btn">يومي</button>
+    </div>
+
+    <div class="month-view" id="month-view">
+        <div class="calendar-weekdays">
+            <div>الأحد</div>
+            <div>الاثنين</div>
+            <div>الثلاثاء</div>
+            <div>الأربعاء</div>
+            <div>الخميس</div>
+            <div>الجمعة</div>
+            <div>السبت</div>
         </div>
 
-        <div class="view-options">
-            <button id="month-view-btn" class="active">شهري</button>
-            <button id="week-view-btn">أسبوعي</button>
-            <button id="day-view-btn">يومي</button>
-        </div>
-
-        <div class="month-view" id="month-view">
-            <div class="calendar-weekdays">
-                <div>الأحد</div>
-                <div>الاثنين</div>
-                <div>الثلاثاء</div>
-                <div>الأربعاء</div>
-                <div>الخميس</div>
-                <div>الجمعة</div>
-                <div>السبت</div>
-            </div>
-
-            <div class="calendar-days" id="month-days">
-                
-            </div>
-        </div>
-
-       
-        <div class="week-view" id="week-view">
-            <div class="calendar-weekdays" id="week-days-header">
-              
-            </div>
-            <div class="week-days" id="week-days">
-               
-            </div>
-        </div>
-
-        
-        <div class="day-view" id="day-view">
-            <div class="day-header" id="day-header">
-               
-            </div>
-            <div class="time-slots" id="time-slots">
-               
-            </div>
+        <div class="calendar-days" id="month-days">
+            <!-- سيتم تعبئتها بالجافاسكريبت -->
         </div>
     </div>
 
-    <button class="today-floating-btn" id="today-floating-btn" title="العودة إلى اليوم الحالي">
-        اليوم
-    </button>
-    <script src="~/js/EventDate.js"></script>
+    <div class="week-view" id="week-view">
+        <div class="calendar-weekdays" id="week-days-header">
+            <!-- سيتم تعبئتها بالجافاسكريبت -->
+        </div>
+        <div class="week-days" id="week-days">
+            <!-- سيتم تعبئتها بالجافاسكريبت -->
+        </div>
+    </div>
+
+    <div class="day-view" id="day-view">
+        <div class="day-header" id="day-header">
+            <!-- سيتم تعبئتها بالجافاسكريبت -->
+        </div>
+        <div class="time-slots" id="time-slots">
+            <!-- سيتم تعبئتها بالجافاسكريبت -->
+        </div>
+    </div>
+</div>
+
+<button class="today-floating-btn" id="today-floating-btn" title="العودة إلى اليوم الحالي">
+    اليوم
+</button>
+
+<!-- Modal لعرض تفاصيل الحدث -->
+<div id="event-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2 id="modal-title">عنوان الحدث</h2>
+        <div class="modal-details">
+            <p><strong>التاريخ:</strong> <span id="modal-date"></span></p>
+            <p><strong>الوقت:</strong> <span id="modal-time"></span></p>
+            <p><strong>المكان:</strong> <span id="modal-location"></span></p>
+            <p><strong>التفاصيل:</strong> <span id="modal-description"></span></p>
+        </div>
+        <button id="edit-event" class="modal-btn">تعديل</button>
+        <button id="delete-event" class="modal-btn">حذف</button>
+    </div>
+</div>
+
+<script src="~/js/EventDate.js"></script>

@@ -20,6 +20,18 @@
     const dayHeader = document.getElementById('day-header');
     const timeSlots = document.getElementById('time-slots');
 
+    // عناصر الـ Modal
+    const modal = document.getElementById('event-modal');
+    const closeModal = document.querySelector('.close-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDate = document.getElementById('modal-date');
+    const modalTime = document.getElementById('modal-time');
+    const modalLocation = document.getElementById('modal-location');
+    const modalDescription = document.getElementById('modal-description');
+    const modalEditBtn = document.getElementById('edit-event');
+    const modalDeleteBtn = document.getElementById('delete-event');
+
+   
     // متغيرات الحالة
     let currentDate = new Date();
     let currentView = 'month'; // month, week, day
@@ -33,11 +45,39 @@
     const dayNames = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
 
     // أحداث عشوائية للعرض التوضيحي
-    const demoEvents = [
-        { date: new Date(2023, 5, 15), title: "اجتماع فريق العمل", time: "10:00" },
-        { date: new Date(2023, 5, 20), title: "موعد مع العميل", time: "14:30" },
-        { date: new Date(2023, 5, 10), title: "عطلة نهاية الأسبوع", time: "09:00" }
-    ];
+    let demoEvents = [];
+
+    function editEvent(id) {
+        window.location.href = `/MyEvents/Edit/${id}`
+    }
+    function deleteEvent(id) {
+        window.location.href = `/MyEvents/Delete/${id}`
+    }
+    async function fetchEvents() {
+        try {
+            const response = await fetch('/MyEvents/GetDatesToCalender');
+            if (!response.ok) {
+                throw new Error('خطأ في جلب الأحداث');
+            }
+            const data = await response.json();
+
+            // تحويل التواريخ إلى كائنات Date حقيقية
+            demoEvents = data.map(event => ({
+                id: event.id,
+                title: event.name,
+                location: event.placeName,
+                description: event.discription,
+                date: new Date(event.startDate),
+                time: event.startTime
+            }));
+
+            // بعد ما يتم الجلب بنجاح، اعرض التقويم
+            switchView('month');
+            console.log(demoEvents);
+        } catch (error) {
+            console.error('فشل في جلب الأحداث:', error);
+        }
+    }
 
     // تبديل العرض
     function switchView(view) {
@@ -129,6 +169,44 @@
                 const indicator = document.createElement('div');
                 indicator.classList.add('event-indicator');
                 dayElement.appendChild(indicator);
+
+                if (dayEvents.length > 1) {
+                    const eventCount = document.createElement('div');
+                    eventCount.classList.add('event-count');
+                    eventCount.textContent = dayEvents.length;
+                    dayElement.appendChild(eventCount);
+                }
+
+                // إضافة tooltip للأحداث
+                const tooltip = createEventTooltip(dayEvents);
+                dayElement.appendChild(tooltip);
+
+                // إظهار/إخفاء tooltip عند التمرير
+                dayElement.addEventListener('mouseenter', () => {
+                    tooltip.style.visibility = 'visible';
+                    tooltip.style.opacity = '1';
+                });
+
+                dayElement.addEventListener('mouseleave', () => {
+                    tooltip.style.visibility = 'hidden';
+                    tooltip.style.opacity = '0';
+                });
+
+                // النقر لعرض تفاصيل الحدث
+                dayElement.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (dayEvents.length === 1) {
+                        showEventDetails(dayEvents[0]);
+                    } else {
+                        // إذا كان هناك أكثر من حدث في اليوم، عرض قائمة للاختيار
+                        const choice = prompt(`هناك ${dayEvents.length} أحداث في هذا اليوم. أدخل رقم الحدث الذي تريد عرضه:\n\n${dayEvents.map((event, idx) => `${idx + 1}: ${event.time} - ${event.title}`).join('\n')
+                            }\n\nأدخل رقم الحدث:`);
+
+                        if (choice && choice >= 1 && choice <= dayEvents.length) {
+                            showEventDetails(dayEvents[choice - 1]);
+                        }
+                    }
+                });
             }
 
             monthDaysElement.appendChild(dayElement);
@@ -196,6 +274,7 @@
             if (dayEvents.length > 0) {
                 const eventsList = document.createElement('div');
                 eventsList.style.marginTop = '10px';
+                dayElement.classList.add('has-events');
                 dayEvents.forEach(event => {
                     const eventElement = document.createElement('div');
                     eventElement.innerHTML = `<strong>${event.time}</strong> - ${event.title}`;
@@ -204,6 +283,22 @@
                     eventElement.style.margin = '5px 0';
                     eventElement.style.borderRadius = '5px';
                     eventElement.style.fontSize = '14px';
+                    eventElement.style.cursor = 'pointer';
+
+                    // إضافة تأثير hover
+                    eventElement.addEventListener('mouseenter', () => {
+                        eventElement.style.backgroundColor = 'rgba(156, 136, 255, 0.5)';
+                    });
+
+                    eventElement.addEventListener('mouseleave', () => {
+                        eventElement.style.backgroundColor = 'rgba(156, 136, 255, 0.2)';
+                    });
+
+                    // النقر لعرض تفاصيل الحدث
+                    eventElement.addEventListener('click', () => {
+                        showEventDetails(event);
+                    });
+
                     eventsList.appendChild(eventElement);
                 });
                 dayElement.appendChild(eventsList);
@@ -239,10 +334,11 @@
                 event.date.getDate() === date &&
                 event.date.getMonth() === month &&
                 event.date.getFullYear() === year &&
-                event.date.getHours() === hour
+                parseInt(event.time.split(':')[0]) === hour
             );
 
             if (hourEvents.length > 0) {
+                timeSlot.classList.add('has-event');
                 hourEvents.forEach(event => {
                     const eventElement = document.createElement('div');
                     eventElement.innerHTML = `<strong>${event.time}</strong> - ${event.title}`;
@@ -250,6 +346,22 @@
                     eventElement.style.padding = '8px';
                     eventElement.style.margin = '8px 0';
                     eventElement.style.borderRadius = '5px';
+                    eventElement.style.cursor = 'pointer';
+
+                    // إضافة تأثير hover
+                    eventElement.addEventListener('mouseenter', () => {
+                        eventElement.style.backgroundColor = 'rgba(156, 136, 255, 0.6)';
+                    });
+
+                    eventElement.addEventListener('mouseleave', () => {
+                        eventElement.style.backgroundColor = 'rgba(156, 136, 255, 0.3)';
+                    });
+
+                    // النقر لعرض تفاصيل الحدث
+                    eventElement.addEventListener('click', () => {
+                        showEventDetails(event);
+                    });
+
                     timeSlot.appendChild(eventElement);
                 });
             }
@@ -310,6 +422,47 @@
         }
     }
 
+    // دالة لإنشاء عنصر تلميح (tooltip) للأحداث
+    function createEventTooltip(events) {
+        const tooltip = document.createElement('div');
+        tooltip.className = 'event-tooltip';
+
+        const eventsList = events.map(event =>
+            `<div class="event-tooltip-item">${event.time} - ${event.title}</div>`
+        ).join('');
+
+        tooltip.innerHTML = eventsList;
+        return tooltip;
+    }
+
+    // دالة لعرض تفاصيل الحدث في Modal
+    function showEventDetails(event) {
+        modalTitle.textContent = event.title;
+        modalDate.textContent = `${event.date.getDate()}/${event.date.getMonth() + 1}/${event.date.getFullYear()}`;
+        modalTime.textContent = event.time;
+        modalLocation.textContent = event.location;
+        modalDescription.textContent = event.description;
+        modalEditBtn.onclick = () => {
+            window.location.href = `/MyEvents/Edit/${event.id}`
+        }
+        modalDeleteBtn.onclick = () => {
+            window.location.href = `/MyEvents/Delete/${event.id}`
+        }
+        modal.style.display = 'block';
+    }
+
+    // إغلاق Modal عند النقر على X
+    closeModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // إغلاق Modal عند النقر خارج المحتوى
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
     // إضافة معالجي الأحداث
     prevPeriodButton.addEventListener('click', goToPrevPeriod);
     nextPeriodButton.addEventListener('click', goToNextPeriod);
@@ -334,5 +487,5 @@
     });
 
     // عرض التقويم الأولي
-    switchView('month');
+    fetchEvents();
 });

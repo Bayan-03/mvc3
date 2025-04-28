@@ -9,6 +9,7 @@
 
 body {
     background-color: #f5f5f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .calendar {
@@ -17,7 +18,7 @@ body {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    position : relative;
 }
 
 .calendar-header {
@@ -90,7 +91,6 @@ body {
     gap: 5px;
     padding: 10px;
 }
-
 
 .week-view {
     display: none;
@@ -165,6 +165,8 @@ body {
     .calendar-day:hover {
         background-color: var(--primary-color);
         color: white;
+        transform: scale(1.05);
+        z-index: 10;
     }
 
 .current-day {
@@ -213,4 +215,188 @@ body {
         background-color: var(--dark-color);
         transform: translateY(-3px);
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+/* أنماط الـ tooltip للأحداث */
+.event-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--dark-color);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    white-space: nowrap;
+    z-index: 100;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    min-width: 150px;
+}
+
+.event-tooltip-item {
+    padding: 4px 0;
+    text-align: right;
+}
+
+.event-tooltip:after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--dark-color) transparent transparent transparent;
+}
+
+/* تأثيرات للنقر */
+.calendar-day:active {
+    transform: scale(0.95);
+}
+
+/* أنماط الـ Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+    .close-modal:hover {
+        color: var(--secondary-color);
+    }
+
+.modal-details {
+    margin: 20px 0;
+    line-height: 1.6;
+}
+
+.modal-btn {
+    padding: 8px 16px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#edit-event {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+#delete-event {
+    background-color: #f44336;
+    color: white;
+}
+
+.modal-btn:hover {
+    opacity: 0.8;
+}
+/* علامات الأحداث المحسنة */
+.has-event {
+    position: relative;
+    background-color: rgba(156, 136, 255, 0.1);
+    border: 1px dashed var(--primary-color);
+}
+
+.event-indicator {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+}
+
+.has-event.current-day .event-indicator {
+    background-color: white;
+}
+
+/* تأثيرات إضافية للأيام التي بها أحداث */
+.calendar-day.has-event:hover {
+    background-color: rgba(156, 136, 255, 0.3);
+    border: 1px solid var(--primary-color);
+}
+
+/* علامة مميزة للأيام التي بها أحداث في عرض الأسبوع */
+.week-day.has-events {
+    background-color: rgba(156, 136, 255, 0.05);
+    border-right: 3px solid var(--primary-color);
+}
+
+/* علامة مميزة للفترات الزمنية التي بها أحداث في عرض اليوم */
+.time-slot.has-event {
+    background-color: rgba(156, 136, 255, 0.05);
+    border-left: 3px solid var(--primary-color);
+}
+
+/* علامة عدد الأحداث */
+.event-count {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.has-event.current-day .event-count {
+    background-color: white;
+    color: var(--secondary-color);
+}
+
+/* تحسين ظهور الـ tooltip */
+.event-tooltip {
+    min-width: 200px;
+    text-align: right;
+    padding: 10px;
+}
+
+.event-tooltip-item {
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+    .event-tooltip-item:last-child {
+        border-bottom: none;
     }
