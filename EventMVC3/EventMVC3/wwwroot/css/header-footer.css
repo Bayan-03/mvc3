@@ -12,6 +12,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+/*    font-family:'Graphik Arabic';*/
+}
+@font-face {
+    font-family: 'MyCustomFont';
+    src: url('~/Font/GRAPHIK ARABIC SEMIBOLD.OTF') format('truetype');
 }
 
 body {
