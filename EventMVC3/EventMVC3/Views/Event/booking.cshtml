@@ -42,27 +42,23 @@
 
 
     <form class="row g-3 needs-validation containertop" novalidate asp-action="booking" asp-controller="Event" method="post">
-        <input type="hidden" asp-for="EventId" value="1" />
-        @* <div class="col-md-4"> *@
-        @*   <label asp-for="IdNumber" for="validationCustom01" class="form-label">رقم الهوية</label> *@
-        @*     <input type="text" asp-for="IdNumber" class="form-control" id="validationCustom01"  value="Mark" required> *@
-        @*   <div class="valid-feedback"> *@
-        @*     Looks good! *@
-        @*   </div> *@
-        @* </div> *@
-        <div class="col-md-4">
-            <label asp-for="UserId" for="validationCustom01" class="form-label">رقم الهوية</label>
-            <input type="text" asp-for="UserId" class="form-control" id="validationCustom01"  value="1   " required>
-            <div class="valid-feedback">
-                Looks good!
-            </div>
-        </div>
+        <input type="hidden" asp-for="EventId"  />
+        <input type="hidden" asp-for="UserId" class="form-control" id="validationCustom01" value="1" required>
+            
+        <div class="col-md-4"> 
+          <label asp-for="IdNumber" for="validationCustom01" class="form-label">رقم الهوية</label> 
+             <input type="text" asp-for="IdNumber" class="form-control" id="validationCustom01"  required> 
+           <div class="valid-feedback"> 
+             Looks good! 
+           </div>
+         </div>
+        
         
 
         <div class="col-md-4">
           <label asp-for="Email" for="validationCustomUsername" class="form-label">Email</label>
           <div class="input-group has-validation ">
-                  <input type="text" asp-for="Email" class="form-control"  id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+                  <input type="text" asp-for="Email" class="form-control"  required>
       
             <div class="invalid-feedback">
               Please choose a Email.
@@ -71,14 +67,14 @@
         </div>
         <div class="col-md-6">
           <label asp-for="PhoneNumber" for="validationCustom03" class="form-label">رقم الجوال</label>
-            <input type="text" asp-for="PhoneNumber" class="form-control"  id="validationCustom03" required>
+            <input type="text" asp-for="PhoneNumber" class="form-control" required>
           <div class="invalid-feedback">
             ادخل رقم الهاتف
           </div>
         </div>
         <div class="col-md-3">
           <label asp-for="BookingDate" for="validationCustom05" class="form-label">تاريخ الحجز</label>
-            <input type="date" asp-for="BookingDate" class="form-control" id="validationCustom05" required>
+            <input type="date" asp-for="BookingDate" class="form-control"  required>
           <div class="invalid-feedback">
             Please provide a valid zip.
           </div>

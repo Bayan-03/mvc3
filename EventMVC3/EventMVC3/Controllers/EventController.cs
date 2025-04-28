@@ -40,13 +40,22 @@ namespace EventMVC3.Controllers
         public IActionResult booking(Reservation reservation)
         {
 
+<<<<<<< Updated upstream
 
             _db.Reservations.Add(reservation);
             _db.SaveChanges();
             return RedirectToAction("Index", "Home"); // أو صفحة تأكيد
 
+=======
+            if (reservation != null )
+            {
+                _db.Reservations.Add(reservation);
+                _db.SaveChanges();
+                return RedirectToAction("Index", "Home"); 
+            }
+>>>>>>> Stashed changes
 
-            //return View(reservation); // يرجع للفورم لو فيه خطأ
+            return View(reservation); 
         }
 
 
