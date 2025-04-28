@@ -3,7 +3,7 @@
     ViewData["Title"] = "حذف الحدث";
 }
 
-<div class="container mt-4">
+<div class="container mt-4" style="padding-bottom: 80px;">
     <h2>@ViewData["Title"]</h2>
     <hr />
 
@@ -23,7 +23,23 @@
             {
                 <dt class="col-sm-3">الصورة:</dt>
                 <dd class="col-sm-9">
-                    <img src="@Model.Image" width="200" class="img-thumbnail" />
+                    <div class="col-md-6">
+                        @if (!string.IsNullOrEmpty(Model.Image))
+                        {
+                            <div class="card shadow-sm mb-4" style="border-radius: 15px;">
+                                <img src="~/images/@Model.Image" class="card-img-top img-fluid rounded" alt="صورة الحدث" style="max-height: 400px; object-fit: cover;">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title">صورة الحدث</h6>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning">
+                                لا توجد صورة متاحة لهذا الحدث.
+                            </div>
+                        }
+                    </div>
                 </dd>
             }
         </dl>
