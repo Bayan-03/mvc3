@@ -1,77 +1,4 @@
-﻿@* @model List<EventMVC3.Models.Event>
-@{
-    ViewData["Title"] = "أحداثي";
-}
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-
-<div class="myevents-container">
-    <h1 class="myevents-title">@ViewData["Title"]</h1>
-
-    <div class="myevents-actions">
-        <a asp-action="Create" class="btn btn-primary">
-            <i class="fas fa-plus"></i> حدث جديد
-        </a>
-    </div>
-
-    @if (Model.Any())
-    {
-        <div class="myevents-table-container">
-            <table class="myevents-table">
-                <thead>
-                    <tr>
-                        <th>اسم الحدث</th>
-                        <th>التصنيف</th>
-                        <th>المكان</th>
-                        <th>التاريخ</th>
-                        <th>الوقت</th>
-                        <th>الإجراءات</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var eventItem in Model)
-                    {
-                        <tr>
-                            <td>@eventItem.Name</td>
-                            <td>@eventItem.CategoryNavigation?.CategoryName</td>
-                            <td>@eventItem.PlaceName, @eventItem.City</td>
-                            <td>@eventItem.StartDate.ToString("yyyy/MM/dd")</td>
-                            <td>
-                                
-                                @eventItem.StartTime?.ToString(@"hh\:mm") -
-                                @eventItem.FineshTime?.ToString(@"hh\:mm")
-                               
-                            </td>
-                            <td class="myevents-actions-cell">
-                                <a asp-action="Details" asp-route-id="@eventItem.Id" class="btn btn-info btn-sm" title="التفاصيل">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                                <a asp-action="Edit" asp-route-id="@eventItem.Id" class="btn btn-warning btn-sm" title="تعديل">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a asp-action="Delete" asp-route-id="@eventItem.Id" class="btn btn-danger btn-sm" title="حذف">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
-    else
-    {
-        <div class="myevents-empty">
-            <i class="fas fa-calendar-times"></i>
-            <p>لا توجد أحداث مسجلة حالياً</p>
-        </div>
-    }
-</div> *@
-
-
-
-
+﻿
 @model List<EventMVC3.Models.Event>
 @{
     ViewData["Title"] = "أحداثي";
@@ -95,7 +22,7 @@
     {
         <div class="table-responsive">
             <table class="table table-hover table-bordered align-middle text-center">
-                <thead class="table-primary">
+                <thead class="table-primary" style="background-color:#BEADFA;">
                     <tr>
                         <th>اسم الحدث</th>
                         <th>التصنيف</th>
@@ -119,10 +46,10 @@
                             </td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <a asp-action="Details" asp-route-id="@eventItem.Id" class="btn btn-outline-info btn-sm" title="التفاصيل">
+                                    <a asp-action="Details" asp-route-id="@eventItem.Id" class="btn btn-outline-info btn-sm" style="color:#4F1787; border-color:#4F1787;" title="التفاصيل">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a asp-action="Edit" asp-route-id="@eventItem.Id" class="btn btn-outline-warning btn-sm" title="تعديل">
+                                    <a asp-action="Edit" asp-route-id="@eventItem.Id" class="btn btn-outline-warning btn-sm" style="color:#4F1787; border-color:#4F1787;" title="تعديل">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <a asp-action="Delete" asp-route-id="@eventItem.Id" class="btn btn-outline-danger btn-sm" title="حذف">

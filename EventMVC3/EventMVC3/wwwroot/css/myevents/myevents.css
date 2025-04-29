@@ -22,9 +22,18 @@
 }
 
 .table-primary {
-    background-color: #BEADFA !important;
+    /*background-color: #BEADFA !important;*/
+    --bs-table-bg: #beadfa7d 
 }
 .my-css {
     margin-top: 5.5rem !important;
     margin-bottom: 6.2rem !important;
+}
+.btn-outline-info:hover{
+    background-color:var(--secondary-color) !important;
+    color: var(--light-color) !important;
+}
+.btn-outline-warning:hover {
+    background-color: var(--secondary-color) !important;
+    color: var(--light-color) !important;
 }
