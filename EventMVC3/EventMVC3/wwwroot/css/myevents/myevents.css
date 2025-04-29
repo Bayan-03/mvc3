@@ -1,149 +1,30 @@
-﻿/* ملف تصميم مخصص لصفحات أحداثي فقط */
-/*.myevents-container {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+﻿
+:root {
+    --primary-color: #9C88FF;
+    --secondary-color: #4F1787;
+    --dark-color: #1F2937;
+    --light-color: #F9FAFB;
+    --gray-color: #E5E7EB;
+    --success-color: #493D9E;
 }
 
-.myevents-title {
-    color: #2c3e50;
-    text-align: center;
-    margin-bottom: 30px;
-    font-weight: 700;
+.btn-success {
+    background-color: var(--primary-color) !important;
+    border: solid var(--primary-color);
 }
-
-.myevents-actions {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.myevents-table-container {
-    overflow-x: auto;
-    margin-top: 20px;
-}
-
-.myevents-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-    .myevents-table th {
-        background-color: #34495e;
-        color: white;
-        padding: 12px 15px;
-        text-align: right;
+    .btn-success:hover {
+        background-color: var(--secondary-color) !important;
+        border: solid var(--secondary-color);
     }
 
-    .myevents-table td {
-        padding: 12px 15px;
-        border-bottom: 1px solid #ecf0f1;
-    }
-
-    .myevents-table tr:hover {
-        background-color: #f8f9fa;
-    }
-
-.myevents-actions-cell {
-    white-space: nowrap;
+.text-primary {
+    color: var(--primary-color) !important;
 }
 
-.myevents-empty {
-    text-align: center;
-    padding: 40px;
-    color: #7f8c8d;
+.table-primary {
+    background-color: #BEADFA !important;
 }
-
-    .myevents-empty i {
-        font-size: 50px;
-        margin-bottom: 15px;
-        color: #bdc3c7;
-    }*/
-
-/* تنسيقات النماذج */
-/*.event-form-container,
-.delete-confirmation {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+.my-css {
+    margin-top: 5.5rem !important;
+    margin-bottom: 6.2rem !important;
 }
-
-    .event-form-container h2,
-    .delete-confirmation h2 {
-        color: #2c3e50;
-        margin-bottom: 20px;
-    }
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-control {
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    padding: 10px 15px;
-}
-
-.form-actions {
-    margin-top: 30px;
-    text-align: left;
-}
-
-.current-image {
-    margin-top: 10px;
-}
-
-    .current-image img {
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }*/
-
-/* تعديلات للعرض على الجوال */
-/*@media (max-width: 768px) {
-    .myevents-container,
-    .event-form-container,
-    .delete-confirmation {
-        padding: 15px;
-        margin: 20px 10px;
-    }
-
-    .myevents-table th,
-    .myevents-table td {
-        padding: 8px 10px;
-    }
-}*/
-
-
-/* تنسيقات صفحة التفاصيل */
-/*.card {
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.card-header {
-    padding: 1.5rem;
-}
-
-.card-body {
-    padding: 2rem;
-}
-
-.card-footer {
-    background-color: #f8f9fa;
-    padding: 1rem 1.5rem;
-}
-
-dl.row dt {
-    font-weight: 600;
-    color: #555;
-}
-
-dl.row dd {
-    margin-bottom: 0.8rem;
-}*/
